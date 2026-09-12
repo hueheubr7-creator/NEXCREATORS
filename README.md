@@ -33,6 +33,10 @@ Depois abra `http://localhost:8321`.
 
 ## Contato
 
-Todos os CTAs e o formulário apontam para o WhatsApp oficial:
-`https://wa.me/5517981428839`. O formulário não usa backend — ele monta a
-mensagem e abre a conversa no WhatsApp.
+Todos os CTAs levam ao formulário de captação (`#contato`), que pede três
+dados: @ do Instagram, quantidade de seguidores e média de visualizações nos
+stories. Depois de validar, ele abre o WhatsApp oficial
+(`https://wa.me/5517981428839`) com a mensagem pronta. Não há backend.
+
+Para campanhas, o link pode apontar direto para o formulário:
+`https://SEU-DOMINIO/#contato`.

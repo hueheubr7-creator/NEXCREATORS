@@ -29,7 +29,7 @@
         <a href="#igaming">iGaming</a>
         <a href="#como-funciona">Como funciona</a>
         <a href="#contato">Contato</a>
-        <a href="https://wa.me/5517981428839" target="_blank" rel="noopener" class="btn btn--black btn--nav">Ser influencer NEX <span class="arrow">→</span></a>
+        <a href="#contato" class="btn btn--black btn--nav">Ser influencer NEX <span class="arrow">→</span></a>
       </nav>
 
       <button class="nav__toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
@@ -60,7 +60,7 @@
           </p>
 
           <div class="hero__ctas">
-            <a href="https://wa.me/5517981428839" target="_blank" rel="noopener" class="btn btn--black">Quero ser um influencer NEX <span class="arrow">→</span></a>
+            <a href="#contato" class="btn btn--black">Quero ser um influencer NEX <span class="arrow">→</span></a>
             <a href="#sobre" class="btn btn--outline">Saiba mais</a>
           </div>
         </div>
@@ -245,34 +245,35 @@
           <h2 class="section__title contato__title">Vamos construir a próxima oportunidade.</h2>
           <p class="section__sub">
             Se você é influenciador e quer transformar sua influência em novas
-            oportunidades de negócio, a conversa começa agora.
+            oportunidades de negócio, envie três informações sobre o seu perfil
+            e continue a conversa direto no nosso WhatsApp.
           </p>
-          <a href="https://wa.me/5517981428839" target="_blank" rel="noopener" class="btn btn--black">Quero ser influenciador <span class="arrow">→</span></a>
         </div>
 
         <form class="form reveal delay-1" id="formContato" novalidate>
           <div class="form__field">
-            <label for="nome">Seu nome</label>
-            <input type="text" id="nome" name="nome" placeholder="Nome completo" required />
+            <label for="instagram"><span class="form__num">01</span>@ do Instagram</label>
+            <input type="text" id="instagram" name="instagram" placeholder="@seuperfil"
+                   autocomplete="off" autocapitalize="none" spellcheck="false"
+                   required aria-describedby="instagram-erro" />
+            <p class="form__error" id="instagram-erro" hidden></p>
           </div>
           <div class="form__field">
-            <label for="perfil">Seu principal perfil</label>
-            <input type="text" id="perfil" name="perfil" placeholder="@seuperfil" />
+            <label for="seguidores"><span class="form__num">02</span>Quantidade de seguidores</label>
+            <input type="text" id="seguidores" name="seguidores" placeholder="Ex.: 50.000"
+                   inputmode="numeric" autocomplete="off"
+                   required aria-describedby="seguidores-erro" />
+            <p class="form__error" id="seguidores-erro" hidden></p>
           </div>
           <div class="form__field">
-            <label for="plataformas">Plataformas</label>
-            <input type="text" id="plataformas" name="plataformas" placeholder="Instagram / TikTok / YouTube / Outras" />
+            <label for="stories"><span class="form__num">03</span>Média de visualizações nos stories</label>
+            <input type="text" id="stories" name="stories" placeholder="Ex.: 3.000"
+                   inputmode="numeric" autocomplete="off"
+                   required aria-describedby="stories-erro" />
+            <p class="form__error" id="stories-erro" hidden></p>
           </div>
-          <div class="form__field">
-            <label for="audiencia">Tamanho da audiência</label>
-            <input type="text" id="audiencia" name="audiencia" placeholder="Ex.: 50 mil seguidores" />
-          </div>
-          <div class="form__field">
-            <label for="mensagem">Mensagem</label>
-            <textarea id="mensagem" name="mensagem" rows="4" placeholder="Conte brevemente sobre seu conteúdo, público e experiência."></textarea>
-          </div>
-          <button type="submit" class="btn btn--black">Enviar mensagem <span class="arrow">→</span></button>
-          <p class="form__hint">Sua mensagem será encaminhada ao nosso canal oficial no WhatsApp.</p>
+          <button type="submit" class="btn btn--black">Enviar pelo WhatsApp <span class="arrow">→</span></button>
+          <p class="form__hint">O WhatsApp abre com a mensagem pronta. É só confirmar o envio.</p>
         </form>
       </div>
     </section>
@@ -291,7 +292,7 @@
       </p>
 
       <nav class="footer__social" aria-label="Redes sociais">
-        <a href="https://wa.me/5517981428839" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="#contato">WhatsApp</a>
         <a href="#" rel="noopener">Instagram</a>
       </nav>
 

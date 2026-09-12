@@ -547,25 +547,41 @@ h1, h2, h3, .step__num, .card__num, .section__index {
   text-transform: uppercase;
 }
 
-.form__field input,
-.form__field textarea {
+.form__num {
+  color: var(--muted);
+  margin-right: 10px;
+}
+
+.form__field input {
   font-family: var(--font-body);
-  font-size: 15px;
+  /* 16px evita o zoom automático do iOS ao focar o campo */
+  font-size: 16px;
   color: var(--black);
   background: transparent;
   border: none;
   border-bottom: 1px solid var(--line-strong);
+  border-radius: 0;
   padding: 10px 2px;
-  resize: vertical;
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.form__field input::placeholder,
-.form__field textarea::placeholder { color: rgba(8, 10, 13, 0.35); }
+.form__field input::placeholder { color: rgba(8, 10, 13, 0.35); }
 
-.form__field input:focus,
-.form__field textarea:focus { border-color: var(--black); }
+.form__field input:focus { border-color: var(--black); }
+
+/* Sem cor de alerta na paleta: o erro engrossa a linha e ganha texto */
+.form__field input[aria-invalid="true"] {
+  border-color: var(--black);
+  box-shadow: 0 1px 0 0 var(--black);
+}
+
+.form__error {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--black);
+}
+.form__error::before { content: "— "; }
 
 .form .btn { align-self: flex-start; margin-top: 6px; }
 
