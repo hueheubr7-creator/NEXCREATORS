@@ -141,8 +141,25 @@
       `Média de visualizações nos stories: ${fields.stories.value}`,
     ].join("\n");
 
+    const botao = form.querySelector('button[type="submit"]');
+    if (botao.disabled) return;
+    botao.disabled = true;
+
+    /* Conversão no Gerenciador de Anúncios. Só o evento vai para a Meta,
+       nunca os dados digitados no formulário. */
+    if (typeof window.fbq === "function") window.fbq("track", "Lead");
+
     /* Mesma aba: pop-ups costumam ser bloqueados nos navegadores internos
-       do Instagram e do Facebook, de onde vem o tráfego dos anúncios */
-    window.location.href = `${WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
+       do Instagram e do Facebook, de onde vem o tráfego dos anúncios.
+       A pausa curta dá tempo do evento Lead sair antes de trocar de página. */
+    setTimeout(() => {
+      window.location.href = `${WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
+    }, 400);
+  });
+
+  /* Ao voltar do WhatsApp pelo botão "voltar", o navegador pode restaurar a
+     página do cache com o botão ainda desativado */
+  window.addEventListener("pageshow", () => {
+    form.querySelector('button[type="submit"]').disabled = false;
   });
 })();
