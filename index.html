@@ -21,7 +21,7 @@
   <meta property="og:image:alt" content="NEX — sites, vídeos, materiais comerciais e artes para empresas" />
   -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="theme-color" content="#f5f4f0" />
+  <meta name="theme-color" content="#080a0d" />
 
   <script type="application/ld+json">
   {
@@ -60,10 +60,9 @@
 
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
 
-  <!-- Detalhes de interface: cursor, barra de progresso e prévia do portfólio -->
+  <!-- Detalhes de interface: cursor e barra de progresso -->
   <div class="cursor" aria-hidden="true"><span></span></div>
   <div class="progresso" aria-hidden="true"></div>
-  <div class="previa" aria-hidden="true"></div>
 
   <!-- ============ MENU ============ -->
   <header class="topo" id="topo">
@@ -110,7 +109,7 @@
   <main id="conteudo">
 
     <!-- ============ HERO ============ -->
-    <section class="hero" id="inicio" data-fundo="papel" aria-label="Apresentação">
+    <section class="hero" id="inicio" aria-label="Apresentação">
       <div class="wrap grade" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
 
       <div class="wrap hero__topo">
@@ -175,7 +174,7 @@
     </div>
 
     <!-- ============ 02 SOBRE ============ -->
-    <section class="secao manifesto" id="sobre" data-fundo="areia">
+    <section class="secao manifesto" id="sobre">
       <div class="wrap manifesto__grid">
         <p class="rotulo" data-revelar>(02) — Sobre a NEX</p>
         <p class="manifesto__texto" data-palavras>
@@ -196,10 +195,35 @@
           </ul>
         </div>
       </div>
+      <p class="wrap rotulo tipos__rotulo" data-revelar>Feito para</p>
+      <div class="tipos" aria-label="Tipos de negócio que a NEX atende">
+        <div class="tipos__linha">
+          <span>Restaurantes e lanchonetes</span>
+          <span>Clínicas e consultórios</span>
+          <span>Lojas e e-commerces</span>
+          <span>Prestadores de serviço</span>
+          <span>Escritórios</span>
+          <span>Academias e estúdios</span>
+          <span>Profissionais liberais</span>
+          <span>Imobiliárias</span>
+          <span>Eventos</span>
+        </div>
+        <div class="tipos__linha tipos__linha--volta">
+          <span>Indústrias e distribuidoras</span>
+          <span>Marcas com produto próprio</span>
+          <span>Representantes comerciais</span>
+          <span>Agências e consultorias</span>
+          <span>Construtoras e arquitetos</span>
+          <span>Restaurantes e cafés</span>
+          <span>Clínicas e estética</span>
+          <span>Restaurantes e delivery</span>
+          <span>Lojas</span>
+        </div>
+      </div>
     </section>
 
     <!-- ============ 03 SERVIÇOS ============ -->
-    <section class="secao servicos" id="servicos" data-fundo="papel">
+    <section class="secao servicos" id="servicos">
       <div class="wrap">
         <div class="cabeca">
           <p class="rotulo" data-revelar>(03) — Serviços</p>
@@ -213,7 +237,7 @@
         <div class="pilha">
 
           <!-- Serviço 1 -->
-          <article class="servico servico--escuro" id="sites" style="--i: 0">
+          <article class="servico servico--claro" id="sites" style="--i: 0">
             <div class="servico__grid">
               <div class="servico__a">
                 <p class="servico__num"><span>01 / 04</span><span>Sites e Landing Pages</span></p>
@@ -226,10 +250,11 @@
                   <p class="mini">Destaque</p>
                   <p>Tudo é feito sob medida, totalmente personalizável e editável conforme o seu pedido. Não usamos modelo pronto.</p>
                 </div>
-                <a href="https://wa.me/5517981428839?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20NEX%20e%20quero%20um%20or%C3%A7amento%20de%20site%20%2F%20landing%20page." class="btn btn--pill btn--claro" data-magnetico>
+                <a href="https://wa.me/5517981428839?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20NEX%20e%20quero%20um%20or%C3%A7amento%20de%20site%20%2F%20landing%20page." class="btn btn--pill btn--invertido" data-magnetico>
                   <span class="rolar"><span>Solicitar orçamento sem compromisso</span></span>
                   <svg class="seta" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 11 11 3M5 3h6v6" /></svg>
                 </a>
+                <button type="button" class="servico__mais" aria-expanded="false">Ver entregas e o que está incluído <span aria-hidden="true">+</span></button>
               </div>
 
               <div class="servico__b">
@@ -275,7 +300,7 @@
           </article>
 
           <!-- Serviço 2 -->
-          <article class="servico servico--salvia" id="videos" style="--i: 1">
+          <article class="servico" id="videos" style="--i: 1">
             <div class="servico__grid">
               <div class="servico__a">
                 <p class="servico__num"><span>02 / 04</span><span>Vídeos</span></p>
@@ -291,6 +316,7 @@
                   <span class="rolar"><span>Solicitar orçamento sem compromisso</span></span>
                   <svg class="seta" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 11 11 3M5 3h6v6" /></svg>
                 </a>
+                <button type="button" class="servico__mais" aria-expanded="false">Ver entregas e o que está incluído <span aria-hidden="true">+</span></button>
               </div>
 
               <div class="servico__b">
@@ -336,7 +362,7 @@
           </article>
 
           <!-- Serviço 3 -->
-          <article class="servico servico--nevoa" id="materiais" style="--i: 2">
+          <article class="servico servico--claro" id="materiais" style="--i: 2">
             <div class="servico__grid">
               <div class="servico__a">
                 <p class="servico__num"><span>03 / 04</span><span>Materiais Comerciais</span></p>
@@ -349,10 +375,11 @@
                   <p class="mini">Destaque</p>
                   <p>Material feito com a identidade da sua empresa, pronto para ser usado na hora de fechar vendas.</p>
                 </div>
-                <a href="https://wa.me/5517981428839?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20NEX%20e%20quero%20um%20or%C3%A7amento%20de%20materiais%20comerciais." class="btn btn--pill" data-magnetico>
+                <a href="https://wa.me/5517981428839?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20NEX%20e%20quero%20um%20or%C3%A7amento%20de%20materiais%20comerciais." class="btn btn--pill btn--invertido" data-magnetico>
                   <span class="rolar"><span>Solicitar orçamento sem compromisso</span></span>
                   <svg class="seta" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 11 11 3M5 3h6v6" /></svg>
                 </a>
+                <button type="button" class="servico__mais" aria-expanded="false">Ver entregas e o que está incluído <span aria-hidden="true">+</span></button>
               </div>
 
               <div class="servico__b">
@@ -397,7 +424,7 @@
           </article>
 
           <!-- Serviço 4 -->
-          <article class="servico servico--lilas" id="artes" style="--i: 3">
+          <article class="servico" id="artes" style="--i: 3">
             <div class="servico__grid">
               <div class="servico__a">
                 <p class="servico__num"><span>04 / 04</span><span>Artes e Posts</span></p>
@@ -414,6 +441,7 @@
                   <span class="rolar"><span>Solicitar orçamento sem compromisso</span></span>
                   <svg class="seta" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 11 11 3M5 3h6v6" /></svg>
                 </a>
+                <button type="button" class="servico__mais" aria-expanded="false">Ver entregas e o que está incluído <span aria-hidden="true">+</span></button>
               </div>
 
               <div class="servico__b">
@@ -461,7 +489,7 @@
     </section>
 
     <!-- ============ 04 PORTFÓLIO ============ -->
-    <section class="secao trabalhos" id="portfolio" data-fundo="nevoa">
+    <section class="secao trabalhos" id="portfolio">
       <div class="wrap">
         <div class="cabeca">
           <p class="rotulo" data-revelar>(04) — Portfólio</p>
@@ -469,81 +497,101 @@
           <p class="cabeca__sub" data-revelar>Uma amostra do que a NEX produz. Filtre por serviço.</p>
         </div>
 
-        <div class="filtros" role="group" aria-label="Filtrar portfólio por serviço" data-revelar>
-          <button type="button" class="filtro" data-filtro="todos" aria-pressed="true">Todos</button>
-          <button type="button" class="filtro" data-filtro="sites" aria-pressed="false">Sites</button>
-          <button type="button" class="filtro" data-filtro="videos" aria-pressed="false">Vídeos</button>
-          <button type="button" class="filtro" data-filtro="materiais" aria-pressed="false">Materiais</button>
-          <button type="button" class="filtro" data-filtro="artes" aria-pressed="false">Artes</button>
+        <div class="trabalhos__barra" data-revelar>
+          <div class="filtros" role="group" aria-label="Filtrar portfólio por serviço">
+            <span class="filtros__marca" aria-hidden="true"></span>
+            <button type="button" class="filtro" data-filtro="todos" aria-pressed="true">Todos</button>
+            <button type="button" class="filtro" data-filtro="sites" aria-pressed="false">Sites</button>
+            <button type="button" class="filtro" data-filtro="videos" aria-pressed="false">Vídeos</button>
+            <button type="button" class="filtro" data-filtro="materiais" aria-pressed="false">Materiais</button>
+            <button type="button" class="filtro" data-filtro="artes" aria-pressed="false">Artes</button>
+          </div>
+          <p class="trabalhos__contagem"><strong class="contagem__atual">01</strong> / <span class="contagem__total">08</span></p>
         </div>
 
-        <!-- Cada item: troque o placeholder da mídia por <img alt="..."> ou <video>,
+        <!-- Cada trabalho: troque o placeholder da mídia por <img alt="..."> ou <video>,
              e preencha cliente e descrição. data-servico controla o filtro.
-             No computador, a mídia aparece como prévia flutuante ao passar o mouse. -->
-        <ul class="obras">
-          <li class="obra" data-servico="sites">
-            <span class="obra__num">01</span>
-            <h3 class="obra__cliente">[PLACEHOLDER: nome do cliente]</h3>
-            <span class="obra__servico">Site institucional</span>
-            <p class="obra__desc">[PLACEHOLDER: breve descrição do trabalho]</p>
-            <div class="obra__midia placeholder">[PLACEHOLDER: imagem do site]</div>
+             No computador, o painel se expande ao passar o mouse; no celular, vira carrossel. -->
+        <ul class="paineis">
+          <li class="trabalho ativo" data-servico="sites" tabindex="0">
+            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagem do site]</div>
+            <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">01</span><span class="trabalho__vertical">Site institucional</span></div>
+            <div class="trabalho__aberto">
+              <span class="trabalho__servico">Site institucional</span>
+              <h3>[PLACEHOLDER: nome do cliente]</h3>
+              <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+            </div>
           </li>
-          <li class="obra" data-servico="videos">
-            <span class="obra__num">02</span>
-            <h3 class="obra__cliente">[PLACEHOLDER: nome do cliente]</h3>
-            <span class="obra__servico">Vídeo de produto</span>
-            <p class="obra__desc">[PLACEHOLDER: breve descrição do trabalho]</p>
-            <div class="obra__midia placeholder">[PLACEHOLDER: vídeo ou capa do vídeo]</div>
+          <li class="trabalho" data-servico="videos" tabindex="0">
+            <div class="trabalho__midia placeholder">[PLACEHOLDER: vídeo ou capa do vídeo]</div>
+            <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">02</span><span class="trabalho__vertical">Vídeo de produto</span></div>
+            <div class="trabalho__aberto">
+              <span class="trabalho__servico">Vídeo de produto</span>
+              <h3>[PLACEHOLDER: nome do cliente]</h3>
+              <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+            </div>
           </li>
-          <li class="obra" data-servico="materiais">
-            <span class="obra__num">03</span>
-            <h3 class="obra__cliente">[PLACEHOLDER: nome do cliente]</h3>
-            <span class="obra__servico">Apresentação comercial</span>
-            <p class="obra__desc">[PLACEHOLDER: breve descrição do trabalho]</p>
-            <div class="obra__midia placeholder">[PLACEHOLDER: imagem do material]</div>
+          <li class="trabalho" data-servico="materiais" tabindex="0">
+            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagem do material]</div>
+            <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">03</span><span class="trabalho__vertical">Apresentação comercial</span></div>
+            <div class="trabalho__aberto">
+              <span class="trabalho__servico">Apresentação comercial</span>
+              <h3>[PLACEHOLDER: nome do cliente]</h3>
+              <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+            </div>
           </li>
-          <li class="obra" data-servico="artes">
-            <span class="obra__num">04</span>
-            <h3 class="obra__cliente">[PLACEHOLDER: nome do cliente]</h3>
-            <span class="obra__servico">Kit de posts</span>
-            <p class="obra__desc">[PLACEHOLDER: breve descrição do trabalho]</p>
-            <div class="obra__midia placeholder">[PLACEHOLDER: imagem das artes]</div>
+          <li class="trabalho" data-servico="artes" tabindex="0">
+            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagem das artes]</div>
+            <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">04</span><span class="trabalho__vertical">Kit de posts</span></div>
+            <div class="trabalho__aberto">
+              <span class="trabalho__servico">Kit de posts</span>
+              <h3>[PLACEHOLDER: nome do cliente]</h3>
+              <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+            </div>
           </li>
-          <li class="obra" data-servico="sites">
-            <span class="obra__num">05</span>
-            <h3 class="obra__cliente">[PLACEHOLDER: nome do cliente]</h3>
-            <span class="obra__servico">Landing page</span>
-            <p class="obra__desc">[PLACEHOLDER: breve descrição do trabalho]</p>
-            <div class="obra__midia placeholder">[PLACEHOLDER: imagem da landing page]</div>
+          <li class="trabalho" data-servico="sites" tabindex="0">
+            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagem da landing page]</div>
+            <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">05</span><span class="trabalho__vertical">Landing page</span></div>
+            <div class="trabalho__aberto">
+              <span class="trabalho__servico">Landing page</span>
+              <h3>[PLACEHOLDER: nome do cliente]</h3>
+              <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+            </div>
           </li>
-          <li class="obra" data-servico="videos">
-            <span class="obra__num">06</span>
-            <h3 class="obra__cliente">[PLACEHOLDER: nome do cliente]</h3>
-            <span class="obra__servico">Reels</span>
-            <p class="obra__desc">[PLACEHOLDER: breve descrição do trabalho]</p>
-            <div class="obra__midia placeholder">[PLACEHOLDER: vídeo ou capa do vídeo]</div>
+          <li class="trabalho" data-servico="videos" tabindex="0">
+            <div class="trabalho__midia placeholder">[PLACEHOLDER: vídeo ou capa do vídeo]</div>
+            <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">06</span><span class="trabalho__vertical">Reels</span></div>
+            <div class="trabalho__aberto">
+              <span class="trabalho__servico">Reels</span>
+              <h3>[PLACEHOLDER: nome do cliente]</h3>
+              <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+            </div>
           </li>
-          <li class="obra" data-servico="materiais">
-            <span class="obra__num">07</span>
-            <h3 class="obra__cliente">[PLACEHOLDER: nome do cliente]</h3>
-            <span class="obra__servico">Catálogo</span>
-            <p class="obra__desc">[PLACEHOLDER: breve descrição do trabalho]</p>
-            <div class="obra__midia placeholder">[PLACEHOLDER: imagem do catálogo]</div>
+          <li class="trabalho" data-servico="materiais" tabindex="0">
+            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagem do catálogo]</div>
+            <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">07</span><span class="trabalho__vertical">Catálogo</span></div>
+            <div class="trabalho__aberto">
+              <span class="trabalho__servico">Catálogo</span>
+              <h3>[PLACEHOLDER: nome do cliente]</h3>
+              <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+            </div>
           </li>
-          <li class="obra" data-servico="artes">
-            <span class="obra__num">08</span>
-            <h3 class="obra__cliente">[PLACEHOLDER: nome do cliente]</h3>
-            <span class="obra__servico">Carrossel</span>
-            <p class="obra__desc">[PLACEHOLDER: breve descrição do trabalho]</p>
-            <div class="obra__midia placeholder">[PLACEHOLDER: imagem do carrossel]</div>
+          <li class="trabalho" data-servico="artes" tabindex="0">
+            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagem do carrossel]</div>
+            <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">08</span><span class="trabalho__vertical">Carrossel</span></div>
+            <div class="trabalho__aberto">
+              <span class="trabalho__servico">Carrossel</span>
+              <h3>[PLACEHOLDER: nome do cliente]</h3>
+              <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+            </div>
           </li>
         </ul>
-        <p class="obras-dica" aria-hidden="true">Arraste para o lado →</p>
+        <div class="paineis__pontos" aria-hidden="true"></div>
       </div>
     </section>
 
     <!-- ============ 05 DIFERENCIAIS ============ -->
-    <section class="secao diferenciais" id="diferenciais" data-fundo="salvia">
+    <section class="secao diferenciais" id="diferenciais">
       <div class="wrap">
         <div class="cabeca">
           <p class="rotulo" data-revelar>(05) — Diferenciais</p>
@@ -607,7 +655,7 @@
     </section>
 
     <!-- ============ 06 PROCESSO ============ -->
-    <section class="secao processo" id="como-funciona" data-fundo="lilas">
+    <section class="secao processo" id="como-funciona">
       <div class="wrap processo__grid">
         <div class="processo__fixo">
           <p class="rotulo" data-revelar>(06) — Como funciona</p>
@@ -648,7 +696,7 @@
     </section>
 
     <!-- ============ 07 PERGUNTAS FREQUENTES ============ -->
-    <section class="secao faq" id="faq" data-fundo="papel">
+    <section class="secao faq" id="faq">
       <div class="wrap faq__grid">
         <div class="faq__lado">
           <p class="rotulo" data-revelar>(07) — Dúvidas</p>
@@ -742,7 +790,7 @@
     </section>
 
     <!-- ============ 08 CHAMADA FINAL + RODAPÉ ============ -->
-    <section class="final" id="contato" data-fundo="preto">
+    <section class="final" id="contato">
       <div class="wrap">
         <p class="rotulo" data-revelar>(08) — Contato</p>
         <h2 class="final__titulo">

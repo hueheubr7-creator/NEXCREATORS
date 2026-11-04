@@ -8,6 +8,7 @@
   const $$ = (sel, raiz = document) => [...raiz.querySelectorAll(sel)];
   const limitar = (v, min, max) => Math.min(Math.max(v, min), max);
   const lerp = (a, b, t) => a + (b - a) * t;
+  const dois = (n) => String(n).padStart(2, "0");
 
   const reduzMovimento = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const mouseFino = matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -79,12 +80,12 @@
 
   const hero = $(".hero");
   const comecar = () => hero && hero.classList.add("pronto");
-  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() =>
-    requestAnimationFrame(comecar)
-  );
+  const fontesProntas = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+  fontesProntas.then(() => requestAnimationFrame(comecar));
   setTimeout(comecar, 1200); // garantia se as fontes demorarem
 
-  /* Palavra que troca sozinha no hero */
+  /* Palavra que troca sozinha no hero. A que saiu volta para baixo sem
+     animação; senão ela atravessaria a caixa e se sobreporia à nova. */
   const itensGiro = $$(".giro__item");
   if (itensGiro.length > 1 && !reduzMovimento) {
     let atual = 0;
@@ -94,19 +95,40 @@
       const entrando = itensGiro[atual];
       saindo.classList.remove("ativo");
       saindo.classList.add("saindo");
-      entrando.classList.remove("saindo");
       entrando.classList.add("ativo");
-      setTimeout(() => saindo.classList.remove("saindo"), 750);
+      setTimeout(() => {
+        saindo.style.transition = "none";
+        saindo.classList.remove("saindo");
+        void saindo.offsetWidth; // aplica a posição sem animar
+        saindo.style.transition = "";
+      }, 750);
     }, 1900);
   }
 
+  /* ---------- Títulos de seção: palavras em máscaras ---------- */
+
+  $$(".cabeca__titulo").forEach((titulo) => {
+    const texto = titulo.textContent.trim().replace(/\s+/g, " ");
+    titulo.setAttribute("aria-label", texto);
+    titulo.innerHTML = texto
+      .split(" ")
+      .map((p, i) => `<span class="pm" aria-hidden="true"><span style="--d:${i}">${p}</span></span>`)
+      .join(" ");
+  });
+
+  /* ---------- Faixas "Feito para": cópia para a volta sem emenda ---------- */
+
+  $$(".tipos__linha").forEach((linha) => {
+    [...linha.children].forEach((item) => {
+      const copia = item.cloneNode(true);
+      copia.setAttribute("aria-hidden", "true");
+      linha.appendChild(copia);
+    });
+  });
+
   /* ---------- Revelar ao rolar ---------- */
 
-  // Sem o empilhamento (telas menores), os cartões de serviço entram ao rolar
-  const pilhaPresa = matchMedia("(min-width: 1081px) and (min-height: 760px)");
-  if (!pilhaPresa.matches && !reduzMovimento) $$(".servico").forEach((c) => c.classList.add("revela"));
-
-  const revelaveis = $$("[data-revelar], section.final, .servico.revela");
+  const revelaveis = $$("[data-revelar], section.final");
   if ("IntersectionObserver" in window && !reduzMovimento) {
     const io = new IntersectionObserver(
       (entradas) =>
@@ -137,30 +159,133 @@
     palavras = $$(".palavra", manifesto);
   }
 
-  /* ---------- Portfólio: filtros e prévia flutuante ---------- */
+  /* ---------- Serviços: "ver entregas" nos cartões compactos ---------- */
 
+  $$(".servico__mais").forEach((botao) =>
+    botao.addEventListener("click", () => {
+      const cartao = botao.closest(".servico");
+      const abrir = !cartao.classList.contains("expandido");
+      cartao.classList.toggle("expandido", abrir);
+      cartao.style.transform = "";
+      cartao.style.setProperty("--escuro", 0);
+      botao.setAttribute("aria-expanded", String(abrir));
+      botao.firstChild.textContent = abrir ? "Fechar detalhes " : "Ver entregas e o que está incluído ";
+      if (!abrir) rolarPara("#" + cartao.id); // ao fechar, volta ao começo do cartão
+    })
+  );
+
+  /* ---------- Portfólio: painéis, filtros e contador ---------- */
+
+  const paineis = $(".paineis");
+  const trabalhos = $$(".trabalho");
   const filtros = $$(".filtro");
-  const obras = $$(".obra");
+  const marcaFiltro = $(".filtros__marca");
+  const contAtual = $(".contagem__atual");
+  const contTotal = $(".contagem__total");
+  const pontos = $(".paineis__pontos");
+  const modoCarrossel = matchMedia("(max-width: 880px)");
+  const visiveis = () => trabalhos.filter((t) => !t.hidden);
+
+  function moverMarca() {
+    const ativo = filtros.find((b) => b.getAttribute("aria-pressed") === "true");
+    if (!ativo || !marcaFiltro) return;
+    marcaFiltro.style.width = `${ativo.offsetWidth}px`;
+    marcaFiltro.style.transform = `translateX(${ativo.offsetLeft}px)`;
+  }
+
+  function ativarTrabalho(item) {
+    trabalhos.forEach((t) => t.classList.toggle("ativo", t === item));
+    const lista = visiveis();
+    if (contTotal) contTotal.textContent = dois(lista.length);
+    if (contAtual) contAtual.textContent = dois(Math.max(1, lista.indexOf(item) + 1));
+    if (pontos) [...pontos.children].forEach((p, i) => p.classList.toggle("ativo", lista[i] === item));
+  }
+
+  function montarPontos() {
+    if (pontos) pontos.innerHTML = visiveis().map(() => "<span></span>").join("");
+  }
+
+  /* No celular: o cartão mais perto do centro cresce e vira o ativo */
+  function atualizarCarrossel() {
+    if (!paineis) return;
+    if (!modoCarrossel.matches) {
+      trabalhos.forEach((t) => {
+        t.style.removeProperty("--s");
+        t.style.removeProperty("--o");
+      });
+      return;
+    }
+    const centro = paineis.scrollLeft + paineis.clientWidth / 2;
+    let maisPerto = null;
+    let menor = Infinity;
+    visiveis().forEach((t) => {
+      const d = Math.abs(t.offsetLeft + t.offsetWidth / 2 - centro) / t.offsetWidth;
+      if (d < menor) {
+        menor = d;
+        maisPerto = t;
+      }
+      const k = Math.min(d, 1.5);
+      t.style.setProperty("--s", (1 - k * 0.1).toFixed(3));
+      t.style.setProperty("--o", (1 - k * 0.45).toFixed(3));
+    });
+    if (maisPerto && !maisPerto.classList.contains("ativo")) ativarTrabalho(maisPerto);
+  }
 
   function filtrar(servico) {
     filtros.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.filtro === servico)));
-    obras.forEach((o) => (o.hidden = servico !== "todos" && o.dataset.servico !== servico));
+    trabalhos.forEach((t) => {
+      const mostrar = servico === "todos" || t.dataset.servico === servico;
+      if (mostrar) {
+        t.classList.remove("entrando");
+        void t.offsetWidth; // reinicia a animação de entrada
+        t.classList.add("entrando");
+      }
+      t.hidden = !mostrar;
+    });
+    moverMarca();
+    montarPontos();
+    if (visiveis()[0]) ativarTrabalho(visiveis()[0]);
+    if (paineis) paineis.scrollLeft = 0;
+    requestAnimationFrame(atualizarCarrossel);
   }
+
   filtros.forEach((b) => b.addEventListener("click", () => filtrar(b.dataset.filtro)));
   $$("a[data-filtro]").forEach((a) => a.addEventListener("click", () => filtrar(a.dataset.filtro)));
 
-  const previa = $(".previa");
-  const posPrevia = { x: 0, y: 0, alvoX: 0, alvoY: 0 };
-  if (previa && mouseFino) {
-    obras.forEach((obra) => {
-      obra.addEventListener("mouseenter", () => {
-        const midia = $(".obra__midia", obra);
-        previa.innerHTML = midia ? midia.outerHTML : "";
-        previa.classList.add("ativa");
-      });
-      obra.addEventListener("mouseleave", () => previa.classList.remove("ativa"));
+  trabalhos.forEach((t) => {
+    t.addEventListener("mouseenter", () => !modoCarrossel.matches && ativarTrabalho(t));
+    t.addEventListener("focus", () => ativarTrabalho(t));
+    t.addEventListener("click", () => {
+      if (modoCarrossel.matches) {
+        paineis.scrollTo({ left: t.offsetLeft + t.offsetWidth / 2 - paineis.clientWidth / 2, behavior: "smooth" });
+      } else {
+        ativarTrabalho(t);
+      }
     });
+  });
+
+  if (paineis) {
+    let pedido = false;
+    paineis.addEventListener(
+      "scroll",
+      () => {
+        if (pedido) return;
+        pedido = true;
+        requestAnimationFrame(() => {
+          pedido = false;
+          atualizarCarrossel();
+        });
+      },
+      { passive: true }
+    );
   }
+
+  montarPontos();
+  if (trabalhos[0]) ativarTrabalho(trabalhos[0]);
+  fontesProntas.then(() => {
+    moverMarca();
+    atualizarCarrossel();
+  });
 
   /* ---------- Bento: brilho segue o mouse ---------- */
 
@@ -214,13 +339,11 @@
     window.addEventListener("pointermove", (e) => {
       rato.x = e.clientX;
       rato.y = e.clientY;
-      posPrevia.alvoX = e.clientX;
-      posPrevia.alvoY = e.clientY;
       if (cursor) cursor.classList.remove("oculto");
     });
     document.addEventListener("mouseleave", () => cursor && cursor.classList.add("oculto"));
     document.addEventListener("pointerover", (e) => {
-      const interativo = e.target.closest("a, button, .obra");
+      const interativo = e.target.closest("a, button, .trabalho");
       if (cursor) cursor.classList.toggle("grande", !!interativo);
     });
 
@@ -245,7 +368,6 @@
   /* ---------- Laço de quadros: tudo que acompanha a rolagem ---------- */
 
   const raiz = document.documentElement;
-  const metaTema = $('meta[name="theme-color"]');
   const progresso = $(".progresso");
   const secaoFinal = $("section.final");
   const linhasHero = $$(".hero .linha");
@@ -256,19 +378,14 @@
   const linhaProcesso = $(".processo__linha span");
   const contador = $(".contador__atual span");
   const passosArea = $(".processo__passos");
-  const secoesCor = $$("[data-fundo]");
-
-  // Cores de fundo vêm das variáveis do CSS (uma fonte só)
-  const estilos = getComputedStyle(raiz);
-  const cor = (nome) => estilos.getPropertyValue(nome === "preto" ? "--black" : "--" + nome).trim();
 
   // A faixa precisa de duas cópias para dar a volta sem emenda
   if (trilho && grupoFaixa) trilho.appendChild(grupoFaixa.cloneNode(true));
 
-  // No celular a rolagem por inércia gera picos de velocidade: a faixa
-  // reage menos, e o título do hero não desliza (ele quebra em mais linhas)
+  // No celular a rolagem por inércia gera picos de velocidade: a faixa reage
+  // menos, e o título do hero desliza menos (a tela é estreita)
   const faixaReacao = mouseFino ? { acel: 0.35, max: 60, inclina: 10 } : { acel: 0.15, max: 30, inclina: 4 };
-  let tituloDesliza = window.innerWidth > 680;
+  const fatorTitulo = () => (window.innerWidth > 680 ? 0.12 : 0.07);
 
   let ultimoY = window.scrollY;
   let yCalculado = NaN;
@@ -276,13 +393,11 @@
   let faixaDir = 1;
   let faixaInclina = 0;
   let passoAtual = -1;
-  let fundoAtual = "";
 
   window.addEventListener("resize", () => {
     yCalculado = NaN; // força recalcular tudo no próximo quadro
-    const antes = tituloDesliza;
-    tituloDesliza = window.innerWidth > 680;
-    if (antes && !tituloDesliza) linhasHero.forEach((l) => (l.style.transform = ""));
+    moverMarca();
+    atualizarCarrossel();
   });
 
   function quadro(tempo) {
@@ -310,8 +425,11 @@
       atualizarRolagem(y, vh);
     }
 
-    // Cursor e prévia seguem o mouse com atraso suave
-    if (mouseFino) moverCursor();
+    if (mouseFino && cursor) {
+      rato.cx = lerp(rato.cx, rato.x, 0.22);
+      rato.cy = lerp(rato.cy, rato.y, 0.22);
+      cursor.style.transform = `translate3d(${rato.cx}px, ${rato.cy}px, 0)`;
+    }
 
     requestAnimationFrame(quadro);
   }
@@ -321,33 +439,19 @@
     const total = raiz.scrollHeight - vh;
     if (progresso) progresso.style.transform = `scaleX(${total > 0 ? y / total : 0})`;
 
-    // Fundo da página assume a cor da seção que ocupa o meio da tela
-    const meio = vh * 0.5;
-    const secao = secoesCor.find((s) => {
-      const r = s.getBoundingClientRect();
-      return r.top <= meio && r.bottom > meio;
-    });
-    const nome = secao ? secao.dataset.fundo : fundoAtual;
-    if (nome && nome !== fundoAtual) {
-      fundoAtual = nome;
-      const c = cor(nome);
-      document.body.style.backgroundColor = c;
-      if (nome !== "preto") raiz.style.setProperty("--fundo", c); // menu e barra fixa acompanham
-      if (metaTema) metaTema.setAttribute("content", c); // barra do navegador no celular
-    }
-
-    // Menu escuro enquanto passa sobre a seção preta do fim
+    // Menu claro enquanto passa sobre a seção clara do fim
     if (secaoFinal) {
       const rf = secaoFinal.getBoundingClientRect();
       const h = navH();
-      document.body.classList.toggle("topo-escuro", rf.top <= h && rf.bottom > h);
+      document.body.classList.toggle("topo-claro", rf.top <= h && rf.bottom > h);
     }
 
-    // Hero: linhas do título deslizam em direções alternadas (só em telas largas)
-    if (!reduzMovimento && tituloDesliza && y < vh * 1.2) {
+    // Hero: linhas do título deslizam em direções alternadas
+    if (!reduzMovimento && y < vh * 1.2) {
+      const fator = fatorTitulo();
       linhasHero.forEach((l) => {
         const dir = Number(l.dataset.dir || 1);
-        l.style.transform = `translate3d(${(dir * y * 0.12).toFixed(1)}px, 0, 0)`;
+        l.style.transform = `translate3d(${(dir * y * fator).toFixed(1)}px, 0, 0)`;
       });
     }
 
@@ -362,20 +466,15 @@
     }
 
     // Serviços: o cartão de trás encolhe e escurece quando o próximo cobre
-    if (pilhaPresa.matches && !reduzMovimento) {
+    if (!reduzMovimento) {
       cartoes.forEach((c, i) => {
         const prox = cartoes[i + 1];
-        if (!prox) return;
+        if (!prox || c.classList.contains("expandido")) return;
         const rc = c.getBoundingClientRect();
         const rp = prox.getBoundingClientRect();
         const p = limitar(1 - (rp.top - rc.top) / rc.height, 0, 1);
-        c.style.transform = `scale(${1 - p * 0.06})`;
-        c.style.setProperty("--escuro", (p * 0.45).toFixed(3));
-      });
-    } else if (cartoes.length && cartoes[0].style.transform) {
-      cartoes.forEach((c) => {
-        c.style.transform = "";
-        c.style.setProperty("--escuro", 0);
+        c.style.transform = p > 0 ? `scale(${(1 - p * 0.06).toFixed(4)})` : "";
+        c.style.setProperty("--escuro", (p * 0.5).toFixed(3));
       });
     }
 
@@ -394,7 +493,7 @@
         if (contador) {
           contador.style.transform = "translateY(-100%)";
           setTimeout(() => {
-            contador.textContent = String(idx + 1).padStart(2, "0");
+            contador.textContent = dois(idx + 1);
             contador.style.transition = "none";
             contador.style.transform = "translateY(100%)";
             requestAnimationFrame(() => {
@@ -404,22 +503,6 @@
           }, reduzMovimento ? 0 : 280);
         }
       }
-    }
-  }
-
-  function moverCursor() {
-    rato.cx = lerp(rato.cx, rato.x, 0.22);
-    rato.cy = lerp(rato.cy, rato.y, 0.22);
-    if (cursor) cursor.style.transform = `translate3d(${rato.cx}px, ${rato.cy}px, 0)`;
-    if (previa && previa.classList.contains("ativa")) {
-      posPrevia.x = lerp(posPrevia.x, posPrevia.alvoX, 0.14);
-      posPrevia.y = lerp(posPrevia.y, posPrevia.alvoY, 0.14);
-      const inclina = limitar((posPrevia.alvoX - posPrevia.x) * 0.06, -8, 8);
-      previa.style.transform =
-        `translate3d(${posPrevia.x + 28}px, ${posPrevia.y - previa.offsetHeight / 2}px, 0) rotate(${inclina}deg)`;
-    } else {
-      posPrevia.x = posPrevia.alvoX;
-      posPrevia.y = posPrevia.alvoY;
     }
   }
 
