@@ -42,10 +42,23 @@
     if (!link) return;
     const href = link.getAttribute("href");
     if (href.length < 2) return; // "#" vazio (placeholder do Instagram)
-    if (rolarPara(href)) {
-      e.preventDefault();
-      fecharMenu();
+    if (!$(href) && href !== "#inicio") return;
+    e.preventDefault();
+
+    // No menu em tela cheia, deixa o "empurrão" da palavra aparecer antes de sair
+    if (menuTela && menuTela.contains(link) && !reduzMovimento) {
+      if (link.classList.contains("tocado")) return; // toque duplo: já está indo
+      link.classList.add("tocado");
+      setTimeout(() => {
+        link.classList.remove("tocado");
+        fecharMenu();
+        rolarPara(href);
+      }, 400);
+      return;
     }
+
+    rolarPara(href);
+    fecharMenu();
   });
 
   /* ---------- Menu em tela cheia ---------- */

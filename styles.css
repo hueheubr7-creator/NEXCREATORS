@@ -417,6 +417,21 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
 }
 .menu-tela.aberto .menu-tela__nav a { transform: none; opacity: 1; }
 
+/* Toque num item: a palavra é "empurrada" para o lado e volta com um
+   pequeno rebote; o número acompanha. O script espera a animação antes
+   de fechar o menu e rolar até a seção. */
+.menu-tela__nav a.tocado { animation: toque-menu 0.48s var(--ease); }
+.menu-tela__nav a.tocado span { animation: toque-numero 0.48s var(--ease); }
+@keyframes toque-menu {
+  0% { transform: none; }
+  35% { transform: translateX(16px) skewX(-8deg); }
+  70% { transform: translateX(-4px) skewX(2deg); }
+  100% { transform: none; }
+}
+@keyframes toque-numero {
+  35% { color: var(--ink); transform: translateX(-6px); }
+}
+
 /* ---------------- Seções ---------------- */
 
 .secao { padding-block: clamp(96px, 15vh, 180px); }
