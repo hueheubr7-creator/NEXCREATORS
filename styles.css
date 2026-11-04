@@ -13,8 +13,8 @@
   --line-strong: rgba(244, 244, 241, 0.85);
   --muted: rgba(244, 244, 241, 0.6);
   /* Para blocos invertidos (fundo claro, texto preto) */
-  --line-inv: rgba(244, 244, 241, 0.14);
-  --muted-inv: rgba(244, 244, 241, 0.6);
+  --line-inv: rgba(8, 10, 13, 0.14);
+  --muted-inv: rgba(8, 10, 13, 0.6);
   --font-display: "Space Grotesk", sans-serif;
   --font-body: "Inter", sans-serif;
   --nav-h: 68px;
@@ -818,6 +818,15 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
 .entregas h3 { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 4px; }
 .entregas p { font-size: 14px; opacity: 0.66; }
 
+/* Prazo médio em destaque, como um número de painel */
+.prazo {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 3vw, 48px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
 .tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .tags li {
   font-size: 12.5px;
@@ -1291,7 +1300,8 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
   overflow: hidden;
   background: var(--ink);
   color: var(--paper);
-  padding-top: clamp(110px, 18vh, 220px);
+  /* Só o rodapé: sem a chamada que ficava acima dele */
+  padding-top: clamp(56px, 9vh, 96px);
 }
 .final .rotulo { color: var(--muted-inv); }
 
@@ -1344,9 +1354,6 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 24px;
-  margin-top: clamp(96px, 16vh, 180px);
-  padding-top: 40px;
-  border-top: 1px solid var(--line-inv);
 }
 .rodape__marca { grid-column: 1 / span 5; }
 .rodape__marca svg { width: 52px; height: auto; color: var(--paper); margin-bottom: 18px; }
