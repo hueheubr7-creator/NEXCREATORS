@@ -84,53 +84,49 @@
 
   <main>
 
-    <!-- ============ HERO ============ -->
-    <section class="hero">
-      <svg class="hero__watermark" viewBox="0 0 660 400" aria-hidden="true">
-        <use href="#nx-mark"></use>
-      </svg>
-
-      <div class="container hero__grid">
-        <div class="hero__content reveal">
-          <p class="kicker"><span class="kicker__tick"></span>Estúdio de serviços digitais</p>
-
-          <h1 class="hero__title">
-            Site, vídeo e materiais para o seu negócio aparecer&nbsp;melhor.
-          </h1>
-
-          <p class="hero__sub">
-            Tudo personalizado, entregue com velocidade. A NEX produz sites, vídeos,
-            materiais comerciais e artes para empresas e comércios, com acabamento
-            premium e contato direto com quem produz.
-          </p>
-
-          <div class="hero__ctas">
-            <a href="https://wa.me/5517981428839?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20NEX%20e%20quero%20um%20or%C3%A7amento." class="btn btn--black">Solicitar orçamento sem compromisso <span class="arrow">→</span></a>
-            <a href="#portfolio" class="btn btn--outline">Ver portfólio</a>
-          </div>
-        </div>
-
-        <div class="hero__mark reveal delay-2" aria-hidden="true">
-          <svg class="hero__nx" viewBox="0 0 660 400">
-            <use href="#nx-mark"></use>
-          </svg>
-          <span class="hero__diag hero__diag--a"></span>
-          <span class="hero__diag hero__diag--b"></span>
-        </div>
+    <!-- ============ HERO ============
+         Fica preso no topo; a seção seguinte sobe por cima com a lâmina inclinada.
+         [PLACEHOLDER: foto do hero] — preencha data-imagem com o caminho de uma foto
+         (ex.: data-imagem="img/hero.jpg"). Ela é exibida em preto e branco. Vazio,
+         usa a composição com o símbolo NX desenhada pelo script. -->
+    <section class="hero" data-imagem="" aria-label="Apresentação">
+      <div class="hero__media" aria-hidden="true">
+        <canvas class="hero__canvas"></canvas>
       </div>
+      <div class="hero__shade" aria-hidden="true"></div>
 
-      <div class="hero__strip reveal delay-3" aria-hidden="true">
-        <div class="container hero__strip-inner">
-          <span>Sites</span><i></i>
-          <span>Vídeos</span><i></i>
-          <span>Materiais</span><i></i>
-          <span>Artes</span>
+      <div class="hero__content">
+        <div class="hero__intro">
+          <h1 class="hero__title">
+            Site, vídeo e materiais para o seu negócio
+            <span>aparecer melhor. Tudo personalizado, entregue com velocidade.</span>
+          </h1>
+          <a href="https://wa.me/5517981428839?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20NEX%20e%20quero%20um%20or%C3%A7amento." class="hero__cta">
+            <span>Solicitar orçamento sem compromisso</span>
+            <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 11 11 3M5 3h6v6" fill="none" stroke="currentColor" stroke-width="1.4" /></svg>
+          </a>
+          <a href="#portfolio" class="hero__link">Ver portfólio</a>
+        </div>
+
+        <div class="hero__bottom">
+          <p class="hero__meta">Sob orçamento</p>
+          <div class="hero__brand">
+            <ul class="hero__list" aria-label="Serviços">
+              <li><span>01/</span>Sites</li>
+              <li>Vídeos</li>
+              <li>Materiais</li>
+              <li>Artes</li>
+            </ul>
+            <p class="hero__word" aria-hidden="true">NEX</p>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- ============ 01 SERVIÇOS ============ -->
     <section class="section" id="servicos">
+      <!-- Lâmina branca: sobe e inclina sobre o hero conforme a rolagem -->
+      <div class="lamina" aria-hidden="true"></div>
       <div class="container">
         <div class="section__head reveal">
           <p class="section__index">01 — Serviços</p>
