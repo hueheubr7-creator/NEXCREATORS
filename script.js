@@ -102,7 +102,11 @@
 
   /* ---------- Revelar ao rolar ---------- */
 
-  const revelaveis = $$("[data-revelar], .final");
+  // Sem o empilhamento (telas menores), os cartões de serviço entram ao rolar
+  const pilhaPresa = matchMedia("(min-width: 1081px) and (min-height: 760px)");
+  if (!pilhaPresa.matches && !reduzMovimento) $$(".servico").forEach((c) => c.classList.add("revela"));
+
+  const revelaveis = $$("[data-revelar], section.final, .servico.revela");
   if ("IntersectionObserver" in window && !reduzMovimento) {
     const io = new IntersectionObserver(
       (entradas) =>
@@ -240,26 +244,46 @@
 
   /* ---------- Laço de quadros: tudo que acompanha a rolagem ---------- */
 
+  const raiz = document.documentElement;
+  const metaTema = $('meta[name="theme-color"]');
   const progresso = $(".progresso");
-  const secaoFinal = $(".final");
+  const secaoFinal = $("section.final");
   const linhasHero = $$(".hero .linha");
   const trilho = $(".faixa__trilho");
   const grupoFaixa = $(".faixa__grupo");
   const cartoes = $$(".servico");
-  const pilhaPresa = matchMedia("(min-width: 1081px) and (min-height: 760px)");
   const passos = $$(".passo");
   const linhaProcesso = $(".processo__linha span");
   const contador = $(".contador__atual span");
   const passosArea = $(".processo__passos");
+  const secoesCor = $$("[data-fundo]");
+
+  // Cores de fundo vêm das variáveis do CSS (uma fonte só)
+  const estilos = getComputedStyle(raiz);
+  const cor = (nome) => estilos.getPropertyValue(nome === "preto" ? "--black" : "--" + nome).trim();
 
   // A faixa precisa de duas cópias para dar a volta sem emenda
   if (trilho && grupoFaixa) trilho.appendChild(grupoFaixa.cloneNode(true));
 
+  // No celular a rolagem por inércia gera picos de velocidade: a faixa
+  // reage menos, e o título do hero não desliza (ele quebra em mais linhas)
+  const faixaReacao = mouseFino ? { acel: 0.35, max: 60, inclina: 10 } : { acel: 0.15, max: 30, inclina: 4 };
+  let tituloDesliza = window.innerWidth > 680;
+
   let ultimoY = window.scrollY;
+  let yCalculado = NaN;
   let faixaX = 0;
   let faixaDir = 1;
   let faixaInclina = 0;
   let passoAtual = -1;
+  let fundoAtual = "";
+
+  window.addEventListener("resize", () => {
+    yCalculado = NaN; // força recalcular tudo no próximo quadro
+    const antes = tituloDesliza;
+    tituloDesliza = window.innerWidth > 680;
+    if (antes && !tituloDesliza) linhasHero.forEach((l) => (l.style.transform = ""));
+  });
 
   function quadro(tempo) {
     if (lenis) lenis.raf(tempo);
@@ -269,9 +293,48 @@
     const vel = y - ultimoY;
     ultimoY = y;
 
+    // Faixa: corre sozinha, acelera e inclina com a velocidade da rolagem
+    if (!reduzMovimento && trilho && grupoFaixa) {
+      if (vel !== 0) faixaDir = vel > 0 ? 1 : -1;
+      const largura = grupoFaixa.offsetWidth;
+      faixaX -= (0.6 + Math.min(Math.abs(vel), faixaReacao.max) * faixaReacao.acel) * faixaDir;
+      if (faixaX <= -largura) faixaX += largura;
+      if (faixaX > 0) faixaX -= largura;
+      faixaInclina = lerp(faixaInclina, limitar(vel * 0.25, -faixaReacao.inclina, faixaReacao.inclina), 0.1);
+      trilho.style.transform = `translate3d(${faixaX.toFixed(1)}px, 0, 0) skewX(${(-faixaInclina).toFixed(2)}deg)`;
+    }
+
+    // Daqui para baixo, só recalcula quando a rolagem (ou o tamanho) muda
+    if (y !== yCalculado) {
+      yCalculado = y;
+      atualizarRolagem(y, vh);
+    }
+
+    // Cursor e prévia seguem o mouse com atraso suave
+    if (mouseFino) moverCursor();
+
+    requestAnimationFrame(quadro);
+  }
+
+  function atualizarRolagem(y, vh) {
     // Barra de progresso da página
-    const total = document.documentElement.scrollHeight - vh;
+    const total = raiz.scrollHeight - vh;
     if (progresso) progresso.style.transform = `scaleX(${total > 0 ? y / total : 0})`;
+
+    // Fundo da página assume a cor da seção que ocupa o meio da tela
+    const meio = vh * 0.5;
+    const secao = secoesCor.find((s) => {
+      const r = s.getBoundingClientRect();
+      return r.top <= meio && r.bottom > meio;
+    });
+    const nome = secao ? secao.dataset.fundo : fundoAtual;
+    if (nome && nome !== fundoAtual) {
+      fundoAtual = nome;
+      const c = cor(nome);
+      document.body.style.backgroundColor = c;
+      if (nome !== "preto") raiz.style.setProperty("--fundo", c); // menu e barra fixa acompanham
+      if (metaTema) metaTema.setAttribute("content", c); // barra do navegador no celular
+    }
 
     // Menu escuro enquanto passa sobre a seção preta do fim
     if (secaoFinal) {
@@ -280,25 +343,12 @@
       document.body.classList.toggle("topo-escuro", rf.top <= h && rf.bottom > h);
     }
 
-    if (!reduzMovimento) {
-      // Hero: linhas do título deslizam em direções alternadas
-      if (y < vh * 1.2) {
-        linhasHero.forEach((l) => {
-          const dir = Number(l.dataset.dir || 1);
-          l.style.transform = `translate3d(${dir * y * 0.12}px, 0, 0)`;
-        });
-      }
-
-      // Faixa: corre sozinha, acelera e inclina com a velocidade da rolagem
-      if (trilho && grupoFaixa) {
-        if (vel !== 0) faixaDir = vel > 0 ? 1 : -1;
-        const largura = grupoFaixa.offsetWidth;
-        faixaX -= (0.6 + Math.min(Math.abs(vel), 60) * 0.35) * faixaDir;
-        if (faixaX <= -largura) faixaX += largura;
-        if (faixaX > 0) faixaX -= largura;
-        faixaInclina = lerp(faixaInclina, limitar(vel * 0.25, -10, 10), 0.12);
-        trilho.style.transform = `translate3d(${faixaX}px, 0, 0) skewX(${-faixaInclina}deg)`;
-      }
+    // Hero: linhas do título deslizam em direções alternadas (só em telas largas)
+    if (!reduzMovimento && tituloDesliza && y < vh * 1.2) {
+      linhasHero.forEach((l) => {
+        const dir = Number(l.dataset.dir || 1);
+        l.style.transform = `translate3d(${(dir * y * 0.12).toFixed(1)}px, 0, 0)`;
+      });
     }
 
     // Manifesto: cada palavra acende conforme o texto atravessa a tela
@@ -355,25 +405,22 @@
         }
       }
     }
+  }
 
-    // Cursor e prévia seguem o mouse com atraso suave
-    if (mouseFino) {
-      rato.cx = lerp(rato.cx, rato.x, 0.22);
-      rato.cy = lerp(rato.cy, rato.y, 0.22);
-      if (cursor) cursor.style.transform = `translate3d(${rato.cx}px, ${rato.cy}px, 0)`;
-      if (previa && previa.classList.contains("ativa")) {
-        posPrevia.x = lerp(posPrevia.x, posPrevia.alvoX, 0.14);
-        posPrevia.y = lerp(posPrevia.y, posPrevia.alvoY, 0.14);
-        const inclina = limitar((posPrevia.alvoX - posPrevia.x) * 0.06, -8, 8);
-        previa.style.transform =
-          `translate3d(${posPrevia.x + 28}px, ${posPrevia.y - previa.offsetHeight / 2}px, 0) rotate(${inclina}deg)`;
-      } else {
-        posPrevia.x = posPrevia.alvoX;
-        posPrevia.y = posPrevia.alvoY;
-      }
+  function moverCursor() {
+    rato.cx = lerp(rato.cx, rato.x, 0.22);
+    rato.cy = lerp(rato.cy, rato.y, 0.22);
+    if (cursor) cursor.style.transform = `translate3d(${rato.cx}px, ${rato.cy}px, 0)`;
+    if (previa && previa.classList.contains("ativa")) {
+      posPrevia.x = lerp(posPrevia.x, posPrevia.alvoX, 0.14);
+      posPrevia.y = lerp(posPrevia.y, posPrevia.alvoY, 0.14);
+      const inclina = limitar((posPrevia.alvoX - posPrevia.x) * 0.06, -8, 8);
+      previa.style.transform =
+        `translate3d(${posPrevia.x + 28}px, ${posPrevia.y - previa.offsetHeight / 2}px, 0) rotate(${inclina}deg)`;
+    } else {
+      posPrevia.x = posPrevia.alvoX;
+      posPrevia.y = posPrevia.alvoY;
     }
-
-    requestAnimationFrame(quadro);
   }
 
   requestAnimationFrame(quadro);
