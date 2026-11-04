@@ -131,13 +131,45 @@
 
   /* ---------- Faixas "Feito para": cópia para a volta sem emenda ---------- */
 
-  $$(".tipos__linha").forEach((linha) => {
+  const linhasTipos = $$(".tipos__linha");
+  linhasTipos.forEach((linha) => {
     [...linha.children].forEach((item) => {
       const copia = item.cloneNode(true);
       copia.setAttribute("aria-hidden", "true");
       linha.appendChild(copia);
     });
   });
+
+  /* Destaque que acompanha o centro: em cada faixa, a pílula mais perto do
+     meio da tela acende e as vizinhas ficam meio acesas. Só calcula com as
+     faixas visíveis. */
+  const blocoTipos = $(".tipos");
+  let tiposVisiveis = false;
+  if (blocoTipos && "IntersectionObserver" in window) {
+    new IntersectionObserver((e) => (tiposVisiveis = e[0].isIntersecting)).observe(blocoTipos);
+  }
+
+  function focarTipos() {
+    const centro = window.innerWidth / 2;
+    linhasTipos.forEach((linha) => {
+      let foco = null;
+      let menor = Infinity;
+      const itens = [...linha.children];
+      const distancias = itens.map((s) => {
+        const r = s.getBoundingClientRect();
+        const d = Math.abs(r.left + r.width / 2 - centro);
+        if (d < menor) {
+          menor = d;
+          foco = s;
+        }
+        return d;
+      });
+      itens.forEach((s, i) => {
+        s.classList.toggle("foco", s === foco);
+        s.classList.toggle("perto", s !== foco && distancias[i] < window.innerWidth * 0.28);
+      });
+    });
+  }
 
   /* ---------- Revelar ao rolar ---------- */
 
@@ -431,6 +463,9 @@
       faixaInclina = lerp(faixaInclina, limitar(vel * 0.25, -faixaReacao.inclina, faixaReacao.inclina), 0.1);
       trilho.style.transform = `translate3d(${faixaX.toFixed(1)}px, 0, 0) skewX(${(-faixaInclina).toFixed(2)}deg)`;
     }
+
+    // Faixas "Feito para": o destaque segue o centro a cada quadro (elas se movem sozinhas)
+    if (tiposVisiveis) focarTipos();
 
     // Daqui para baixo, só recalcula quando a rolagem (ou o tamanho) muda
     if (y !== yCalculado) {

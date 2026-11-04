@@ -669,20 +669,21 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
 .tipos__rotulo { margin-top: clamp(56px, 9vh, 96px); margin-bottom: 18px; color: var(--muted); }
 
 .tipos {
+  --gap-tipos: 12px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--gap-tipos);
   overflow: hidden;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
 .tipos__linha {
   display: flex;
-  gap: 12px;
+  gap: var(--gap-tipos);
   width: max-content;
-  animation: deslizar 48s linear infinite;
+  animation: deslizar 20s linear infinite;
 }
-.tipos__linha--volta { animation-direction: reverse; animation-duration: 56s; }
+.tipos__linha--volta { animation-direction: reverse; animation-duration: 23s; }
 .tipos:hover .tipos__linha { animation-play-state: paused; }
 .tipos__linha span {
   flex-shrink: 0;
@@ -693,10 +694,21 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
   font-size: clamp(14px, 1.2vw, 17px);
   font-weight: 500;
   white-space: nowrap;
+  opacity: 0.55;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease, transform 0.4s var(--ease);
 }
-.tipos__linha span:nth-child(4n + 1) { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+/* Destaque segue o centro da tela: o script acende a pílula mais perto do meio */
+.tipos__linha span.foco {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+  opacity: 1;
+  transform: scale(1.06);
+}
+.tipos__linha span.perto { opacity: 0.85; }
+.no-js .tipos__linha span { opacity: 1; }
 /* Metade do trilho + meio espaçamento: a cópia encaixa sem emenda */
-@keyframes deslizar { to { transform: translateX(calc(-50% - 6px)); } }
+@keyframes deslizar { to { transform: translateX(calc(-50% - var(--gap-tipos) / 2)); } }
 
 /* ---------------- Serviços (cartões que empilham) ---------------- */
 
@@ -1575,6 +1587,9 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
   .manifesto__rodape { margin-top: 36px; grid-template-columns: 1fr; }
   .manifesto__lista { justify-content: flex-start; }
   .tipos__rotulo { margin-top: 48px; }
+  /* Pílulas menores: mais palavras cruzam o centro e o destaque troca mais vezes */
+  .tipos { --gap-tipos: 8px; }
+  .tipos__linha span { padding: 9px 15px; font-size: 13.5px; }
 
   /* Grade do hero mais espaçada: 3 colunas em vez de 6 */
   .grade { grid-template-columns: repeat(3, 1fr); }
