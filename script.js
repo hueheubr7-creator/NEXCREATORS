@@ -421,7 +421,8 @@
   const cartoes = $$(".servico");
   const passos = $$(".passo");
   const linhaProcesso = $(".processo__linha span");
-  const contador = $(".contador__atual span");
+  const contadores = $$(".contador__atual span"); // o do lado (computador) e o da barra (celular)
+  const trilhoProcesso = $(".processo__trilho span");
   const passosArea = $(".processo__passos");
 
   // A faixa precisa de duas cópias para dar a volta sem emenda
@@ -531,6 +532,7 @@
       const r = passosArea.getBoundingClientRect();
       const p = limitar((vh * 0.55 - r.top) / r.height, 0, 1);
       if (linhaProcesso) linhaProcesso.style.setProperty("--p", p.toFixed(4));
+      if (trilhoProcesso) trilhoProcesso.style.setProperty("--p", p.toFixed(4));
       let idx = 0;
       passos.forEach((s, i) => {
         if (s.getBoundingClientRect().top < vh * 0.55) idx = i;
@@ -538,7 +540,8 @@
       if (idx !== passoAtual) {
         passoAtual = idx;
         passos.forEach((s, i) => s.classList.toggle("atual", i <= idx));
-        if (contador) {
+        // O número sai por cima e o novo entra por baixo
+        contadores.forEach((contador) => {
           contador.style.transform = "translateY(-100%)";
           setTimeout(() => {
             contador.textContent = dois(idx + 1);
@@ -549,7 +552,7 @@
               contador.style.transform = "";
             });
           }, reduzMovimento ? 0 : 280);
-        }
+        });
       }
     }
   }

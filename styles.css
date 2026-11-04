@@ -1212,6 +1212,15 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
 }
 .passo > p:last-child { color: var(--muted); font-size: 17px; max-width: 40ch; }
 .processo__politica { max-width: 460px; }
+.politica {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 1.8vw, 26px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Barra do contador: só no celular (no computador o contador fica ao lado) */
+.processo__barra { display: none; }
 
 /* ---------------- Perguntas frequentes ---------------- */
 
@@ -1584,8 +1593,36 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
   .b4__versoes { order: 0; justify-content: flex-start; }
 
   .processo__fixo { grid-column: 1 / -1; position: static; }
-  .contador { display: none; }
-  .processo__passos { grid-column: 1 / -1; margin-top: 40px; }
+  .processo__fixo .contador { display: none; }
+  .processo__passos { grid-column: 1 / -1; margin-top: 32px; }
+
+  /* Contador preso logo abaixo do menu enquanto as etapas passam */
+  .processo__barra {
+    grid-column: 1 / -1;
+    position: sticky;
+    top: var(--nav-h);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 28px calc(-1 * var(--pad)) 0;
+    padding: 10px var(--pad);
+    background: rgba(8, 10, 13, 0.9);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .contador--mini { margin-top: 0; }
+  .contador--mini .contador__atual { font-size: 56px; }
+  .contador--mini .contador__total { font-size: 18px; margin-left: 4px; }
+  .processo__trilho { flex: 1; height: 2px; background: var(--line); }
+  .processo__trilho span {
+    display: block;
+    height: 100%;
+    background: var(--ink);
+    transform-origin: 0 50%;
+    transform: scaleX(var(--p, 0));
+  }
 }
 
 @media (max-width: 680px) {
