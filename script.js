@@ -1,4 +1,4 @@
-/* NEX Creators — interações discretas */
+/* NEX — interações discretas */
 
 (function () {
   "use strict";
@@ -39,127 +39,25 @@
     );
   }
 
-  /* Formulário de captação → mensagem pronta no WhatsApp oficial */
-  const WHATSAPP = "https://wa.me/5517981428839";
-  const form = document.getElementById("formContato");
-  if (!form) return;
+  /* Portfólio: filtro por serviço */
+  const filtros = document.querySelectorAll(".filtro");
+  const trabalhos = document.querySelectorAll(".trabalho");
 
-  const fields = {
-    instagram: form.elements.instagram,
-    seguidores: form.elements.seguidores,
-    stories: form.elements.stories,
-  };
-
-  /* Aceita "@perfil", "perfil" ou o link do perfil colado do app */
-  function instagramHandle(raw) {
-    const semLink = raw
-      .trim()
-      .replace(/^https?:\/\//i, "")
-      .replace(/^(www\.)?instagram\.com\//i, "");
-    return semLink.split(/[/?#\s]/)[0].replace(/^@+/, "");
+  function filtrar(servico) {
+    filtros.forEach((botao) =>
+      botao.setAttribute("aria-pressed", String(botao.dataset.filtro === servico))
+    );
+    trabalhos.forEach((item) => {
+      item.hidden = servico !== "todos" && item.dataset.servico !== servico;
+    });
   }
 
-  /* 50000 → 50.000, mantendo o cursor no lugar enquanto a pessoa digita */
-  function formatThousands(input) {
-    const caretDigits = input.value
-      .slice(0, input.selectionStart)
-      .replace(/\D/g, "").length;
-    const digits = input.value
-      .replace(/\D/g, "")
-      .replace(/^0+(?=\d)/, "")
-      .slice(0, 12);
-    const formatted = digits.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    input.value = formatted;
-
-    let caret = 0;
-    let seen = 0;
-    while (caret < formatted.length && seen < caretDigits) {
-      if (/\d/.test(formatted[caret])) seen++;
-      caret++;
-    }
-    input.setSelectionRange(caret, caret);
-  }
-
-  function setError(input, message) {
-    const error = document.getElementById(input.getAttribute("aria-describedby"));
-    if (message) {
-      input.setAttribute("aria-invalid", "true");
-      error.textContent = message;
-      error.hidden = false;
-    } else {
-      input.removeAttribute("aria-invalid");
-      error.textContent = "";
-      error.hidden = true;
-    }
-  }
-
-  function validate() {
-    const handle = instagramHandle(fields.instagram.value);
-    const erros = {
-      instagram: !handle
-        ? "Informe o @ do seu Instagram."
-        : !/^[A-Za-z0-9._]{1,30}$/.test(handle)
-        ? "Esse @ não parece válido. Use só letras, números, ponto e _."
-        : "",
-      seguidores: /\d/.test(fields.seguidores.value)
-        ? ""
-        : "Informe quantos seguidores você tem.",
-      stories: /\d/.test(fields.stories.value)
-        ? ""
-        : "Informe a média de visualizações dos seus stories.",
-    };
-
-    Object.keys(fields).forEach((key) => setError(fields[key], erros[key]));
-    const primeiroErro = Object.keys(fields).find((key) => erros[key]);
-    if (primeiroErro) fields[primeiroErro].focus();
-    return { ok: !primeiroErro, handle };
-  }
-
-  [fields.seguidores, fields.stories].forEach((input) =>
-    input.addEventListener("input", () => {
-      formatThousands(input);
-      setError(input, "");
-    })
+  filtros.forEach((botao) =>
+    botao.addEventListener("click", () => filtrar(botao.dataset.filtro))
   );
 
-  fields.instagram.addEventListener("input", () => setError(fields.instagram, ""));
-  fields.instagram.addEventListener("blur", () => {
-    const handle = instagramHandle(fields.instagram.value);
-    if (handle) fields.instagram.value = "@" + handle;
-  });
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const { ok, handle } = validate();
-    if (!ok) return;
-
-    const mensagem = [
-      "Olá, NEX Creators! Quero ser um influenciador NEX.",
-      "",
-      `Instagram: @${handle} (instagram.com/${handle})`,
-      `Seguidores: ${fields.seguidores.value}`,
-      `Média de visualizações nos stories: ${fields.stories.value}`,
-    ].join("\n");
-
-    const botao = form.querySelector('button[type="submit"]');
-    if (botao.disabled) return;
-    botao.disabled = true;
-
-    /* Conversão no Gerenciador de Anúncios. Só o evento vai para a Meta,
-       nunca os dados digitados no formulário. */
-    if (typeof window.fbq === "function") window.fbq("track", "Lead");
-
-    /* Mesma aba: pop-ups costumam ser bloqueados nos navegadores internos
-       do Instagram e do Facebook, de onde vem o tráfego dos anúncios.
-       A pausa curta dá tempo do evento Lead sair antes de trocar de página. */
-    setTimeout(() => {
-      window.location.href = `${WHATSAPP}?text=${encodeURIComponent(mensagem)}`;
-    }, 400);
-  });
-
-  /* Ao voltar do WhatsApp pelo botão "voltar", o navegador pode restaurar a
-     página do cache com o botão ainda desativado */
-  window.addEventListener("pageshow", () => {
-    form.querySelector('button[type="submit"]').disabled = false;
-  });
+  /* Links "Ver no portfólio" de cada serviço já abrem o filtro certo */
+  document.querySelectorAll("a[data-filtro]").forEach((link) =>
+    link.addEventListener("click", () => filtrar(link.dataset.filtro))
+  );
 })();

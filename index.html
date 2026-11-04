@@ -2,26 +2,56 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NEX Creators — Conectamos influenciadores a oportunidades</title>
-  <meta name="description" content="A NEX Creators é uma rede profissional de influenciadores que conecta pessoas, marcas e oportunidades de negócio, com atuação especializada no mercado de iGaming." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>NEX — Sites, vídeos e materiais comerciais para o seu negócio</title>
+  <meta name="description" content="Estúdio de serviços digitais para empresas e comércios: sites e landing pages, vídeos com motion design, materiais comerciais e artes para redes sociais. Tudo personalizado, entregue com velocidade." />
+
+  <!-- [PLACEHOLDER: domínio final] — ative quando o domínio estiver definido:
+  <link rel="canonical" href="https://SEU-DOMINIO/" />
+  <meta property="og:url" content="https://SEU-DOMINIO/" />
+  -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:site_name" content="NEX" />
+  <meta property="og:title" content="NEX — Sites, vídeos e materiais comerciais para o seu negócio" />
+  <meta property="og:description" content="Site, vídeo e materiais para o seu negócio aparecer melhor. Tudo personalizado, entregue com velocidade." />
+  <!-- [PLACEHOLDER: imagem de compartilhamento 1200x630] — ative quando a imagem existir:
+  <meta property="og:image" content="https://SEU-DOMINIO/og-image.png" />
+  <meta property="og:image:alt" content="NEX — sites, vídeos, materiais comerciais e artes para empresas" />
+  -->
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "NEX",
+    "alternateName": "NEX Serviços Comerciais",
+    "description": "Estúdio de serviços digitais para empresas e comércios: sites e landing pages, vídeos, materiais comerciais e artes para redes sociais, com produção personalizada e sob orçamento.",
+    "telephone": "+55-17-98142-8839",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+55-17-98142-8839",
+      "contactType": "sales",
+      "availableLanguage": "Portuguese"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Serviços NEX",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Sites e landing pages personalizadas" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Vídeos informativos com motion design" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Materiais comerciais personalizados" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Artes e posts para redes sociais" } }
+      ]
+    }
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
-
-  <!-- Meta Pixel -->
-  <script>
-    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-    document,'script','https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1862041281872291');
-    fbq('track', 'PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none" alt=""
-    src="https://www.facebook.com/tr?id=1862041281872291&ev=PageView&noscript=1" /></noscript>
   <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 400"><clipPath id="c"><rect width="660" height="400"/></clipPath><g clip-path="url(%23c)" fill="none" stroke="%23080A0D" stroke-width="42"><path d="M-30 -14 342 288 342 -25 690 385"/><path d="M13.5 375 13.5 115 325 380 690 -7"/></g></svg>' />
 </head>
 <body>
@@ -29,23 +59,24 @@
   <!-- ============ NAV ============ -->
   <header class="nav" id="topo">
     <div class="nav__inner">
-      <a href="#topo" class="nav__brand" aria-label="NEX Creators — início">
+      <a href="#topo" class="nav__brand" aria-label="NEX — início">
         <svg class="nav__logo" viewBox="0 0 660 400" aria-hidden="true">
           <use href="#nx-mark"></use>
         </svg>
-        <span class="nav__wordmark">NEX<em>CREATORS</em></span>
+        <span class="nav__wordmark">NEX</span>
       </a>
 
       <nav class="nav__links" id="navLinks" aria-label="Navegação principal">
-        <a href="#sobre">Sobre</a>
-        <a href="#influencers">Para influenciadores</a>
-        <a href="#igaming">iGaming</a>
+        <a href="#sites">Sites</a>
+        <a href="#videos">Vídeos</a>
+        <a href="#materiais">Materiais</a>
+        <a href="#artes">Artes</a>
+        <a href="#portfolio">Portfólio</a>
         <a href="#como-funciona">Como funciona</a>
-        <a href="#contato">Contato</a>
-        <a href="#contato" class="btn btn--black btn--nav">Ser influencer NEX <span class="arrow">→</span></a>
+        <a href="https://wa.me/5517981428839?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20NEX%20e%20quero%20um%20or%C3%A7amento." class="btn btn--black btn--nav">Solicitar orçamento sem compromisso <span class="arrow">→</span></a>
       </nav>
 
-      <button class="nav__toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
+      <button class="nav__toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="navLinks">
         <span></span><span></span>
       </button>
     </div>
@@ -61,20 +92,21 @@
 
       <div class="container hero__grid">
         <div class="hero__content reveal">
-          <p class="kicker"><span class="kicker__tick"></span>Rede profissional de influenciadores</p>
+          <p class="kicker"><span class="kicker__tick"></span>Estúdio de serviços digitais</p>
 
           <h1 class="hero__title">
-            Conectamos<br />influenciadores a&nbsp;oportunidades.
+            Site, vídeo e materiais para o seu negócio aparecer&nbsp;melhor.
           </h1>
 
           <p class="hero__sub">
-            A NEX Creators conecta influenciadores a marcas e campanhas de performance,
-            com atuação especializada no mercado de iGaming.
+            Tudo personalizado, entregue com velocidade. A NEX produz sites, vídeos,
+            materiais comerciais e artes para empresas e comércios, com acabamento
+            premium e contato direto com quem produz.
           </p>
 
           <div class="hero__ctas">
-            <a href="#contato" class="btn btn--black">Quero ser um influencer NEX <span class="arrow">→</span></a>
-            <a href="#sobre" class="btn btn--outline">Saiba mais</a>
+            <a href="https://wa.me/5517981428839?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20NEX%20e%20quero%20um%20or%C3%A7amento." class="btn btn--black">Solicitar orçamento sem compromisso <span class="arrow">→</span></a>
+            <a href="#portfolio" class="btn btn--outline">Ver portfólio</a>
           </div>
         </div>
 
@@ -89,205 +121,691 @@
 
       <div class="hero__strip reveal delay-3" aria-hidden="true">
         <div class="container hero__strip-inner">
-          <span>Influência</span><i></i>
-          <span>Performance</span><i></i>
-          <span>Estratégia</span><i></i>
-          <span>iGaming</span>
+          <span>Sites</span><i></i>
+          <span>Vídeos</span><i></i>
+          <span>Materiais</span><i></i>
+          <span>Artes</span>
         </div>
       </div>
     </section>
 
-    <!-- ============ SOBRE ============ -->
-    <section class="section" id="sobre">
+    <!-- ============ 01 SERVIÇOS ============ -->
+    <section class="section" id="servicos">
       <div class="container">
         <div class="section__head reveal">
-          <p class="section__index">01 — Sobre</p>
-          <h2 class="section__title">Uma nova fase para a NEX.</h2>
-        </div>
-
-        <div class="sobre__grid">
-          <div class="sobre__text reveal">
-            <p>
-              A NEX Creators é uma rede profissional de influenciadores que conecta
-              pessoas, marcas e oportunidades de negócio.
-            </p>
-            <p>
-              Atuamos como ponte entre influenciadores e o mercado, estruturando conexões
-              que geram valor real para os dois lados: para o influenciador, oportunidades
-              sérias e bem negociadas; para as marcas, influência com estratégia e resultado.
-            </p>
-          </div>
-
-          <ul class="pilares">
-            <li class="pilar reveal">
-              <span class="pilar__tick"></span>
-              <h3>Novo visual</h3>
-              <p>Identidade minimalista e sofisticada, à altura de uma marca que conecta influência e negócios.</p>
-            </li>
-            <li class="pilar reveal delay-1">
-              <span class="pilar__tick"></span>
-              <h3>Novo posicionamento</h3>
-              <p>Uma rede focada em conectar influenciadores a oportunidades estratégicas.</p>
-            </li>
-            <li class="pilar reveal delay-2">
-              <span class="pilar__tick"></span>
-              <h3>Nova experiência</h3>
-              <p>Uma estrutura preparada para uma nova fase: processos claros, acompanhamento próximo e novas oportunidades.</p>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ PARA INFLUENCIADORES ============ -->
-    <section class="section section--bordered" id="influencers">
-      <div class="container">
-        <div class="section__head reveal">
-          <p class="section__index">02 — Para influenciadores</p>
-          <h2 class="section__title">O que entregamos aos influenciadores.</h2>
+          <p class="section__index">01 — Serviços</p>
+          <h2 class="section__title">O que a NEX faz pelo seu negócio.</h2>
           <p class="section__sub">
-            Nosso carro-chefe é o setor de iGaming, com foco em campanhas de performance
-            conduzidas com profissionalismo, longe da estética saturada de cassino
-            (tigrinho) e apostas.
+            Quatro frentes, um mesmo padrão: tudo feito sob medida, com prazo curto e
+            acabamento premium. Os valores são sempre sob orçamento.
           </p>
         </div>
 
         <div class="cards">
           <article class="card reveal">
             <span class="card__num">/ 01</span>
-            <h3>Conexão com oportunidades</h3>
-            <p>Acesso a campanhas e marcas alinhadas ao seu perfil, com negociação conduzida por quem entende o mercado.</p>
+            <h3>Sites e landing pages</h3>
+            <p>Um site sob medida, pensado para o celular, que leva o cliente direto para o seu WhatsApp.</p>
+            <a href="#sites" class="card__link">Ver detalhes <span class="arrow">↓</span></a>
           </article>
 
           <article class="card reveal delay-1">
             <span class="card__num">/ 02</span>
-            <h3>Performance em iGaming</h3>
-            <p>Especialistas no principal setor de performance digital da atualidade, com campanhas criteriosas e estruturadas.</p>
+            <h3>Vídeos</h3>
+            <p>Vídeos com motion design que mostram o seu negócio ou produto em poucos segundos.</p>
+            <a href="#videos" class="card__link">Ver detalhes <span class="arrow">↓</span></a>
           </article>
 
           <article class="card reveal delay-2">
             <span class="card__num">/ 03</span>
-            <h3>Ambiente profissional</h3>
-            <p>Relação transparente, comunicação direta e suporte contínuo. Você entende onde está e com quem está trabalhando.</p>
+            <h3>Materiais comerciais</h3>
+            <p>Apresentações, propostas e catálogos com a sua identidade, prontos para fechar vendas.</p>
+            <a href="#materiais" class="card__link">Ver detalhes <span class="arrow">↓</span></a>
           </article>
 
           <article class="card reveal delay-3">
             <span class="card__num">/ 04</span>
-            <h3>Visão de crescimento</h3>
-            <p>Leitura estratégica do seu público e do seu formato para construir oportunidades compatíveis com sua trajetória.</p>
+            <h3>Artes e posts</h3>
+            <p>Peças para redes sociais alinhadas à sua marca, avulsas ou em kits.</p>
+            <a href="#artes" class="card__link">Ver detalhes <span class="arrow">↓</span></a>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- ============ ESPECIALIZAÇÃO / IGAMING ============ -->
-    <section class="section section--bordered igaming" id="igaming">
-      <svg class="igaming__watermark" viewBox="0 0 660 400" aria-hidden="true">
-        <use href="#nx-mark"></use>
-      </svg>
-
+    <!-- ============ 02 SITES E LANDING PAGES ============ -->
+    <section class="section section--bordered" id="sites">
       <div class="container">
-        <p class="section__index reveal">03 — Especialização</p>
-
-        <h2 class="igaming__title reveal">
-          <span class="igaming__lead">Nosso principal mercado é o</span>
-          <span class="igaming__word">iGAMING</span>
-        </h2>
-
-        <div class="igaming__body">
-          <p class="reveal delay-1">
-            Atuamos principalmente na conexão entre influenciadores e empresas do mercado
-            de iGaming, estruturando oportunidades de parceria e campanhas de performance.
+        <div class="section__head reveal">
+          <p class="section__index">02 — Sites e Landing Pages</p>
+          <h2 class="section__title">Sites e landing pages personalizadas.</h2>
+          <p class="section__sub">
+            Feitos sob medida para o seu negócio passar confiança e transformar visita
+            em conversa no WhatsApp.
           </p>
+        </div>
 
-          <ul class="igaming__keys reveal delay-2">
-            <li>Influência</li>
-            <li>Performance</li>
-            <li>Estratégia</li>
-          </ul>
+        <div class="servico__grid">
+          <div class="reveal">
+            <div class="bloco">
+              <p class="bloco__label">Para quem é</p>
+              <ul class="tags">
+                <li>Restaurantes e lanchonetes</li>
+                <li>Clínicas e consultórios</li>
+                <li>Lojas</li>
+                <li>Prestadores de serviço</li>
+                <li>Escritórios</li>
+                <li>Academias e estúdios</li>
+                <li>Profissionais liberais</li>
+              </ul>
+            </div>
+            <div class="bloco">
+              <p class="bloco__label">Destaque</p>
+              <p class="destaque">Tudo é feito sob medida, totalmente personalizável e editável conforme o seu pedido. Não usamos modelo pronto.</p>
+            </div>
+            <div class="bloco">
+              <p class="bloco__label">O que está incluído</p>
+              <ul class="lista-traco">
+                <li>Layout otimizado para celular</li>
+                <li>Botão de WhatsApp integrado</li>
+                <li>Carregamento rápido</li>
+                <li>Estrutura pensada para conversão</li>
+                <li>Ajustes conforme o pedido</li>
+                <li><span class="placeholder">[PLACEHOLDER: domínio e hospedagem, se aplicável]</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bloco reveal delay-1">
+            <p class="bloco__label">Tipos de entrega</p>
+            <ul class="pilares">
+              <li class="pilar">
+                <span class="pilar__tick"></span>
+                <h3>Site institucional</h3>
+                <p>Apresenta a empresa, os serviços e as formas de contato em um endereço próprio.</p>
+              </li>
+              <li class="pilar">
+                <span class="pilar__tick"></span>
+                <h3>Landing page de captura</h3>
+                <p>Página com um único objetivo: receber o contato de clientes interessados.</p>
+              </li>
+              <li class="pilar">
+                <span class="pilar__tick"></span>
+                <h3>Landing page de oferta</h3>
+                <p>Página de venda direta de um produto, serviço ou promoção.</p>
+              </li>
+              <li class="pilar">
+                <span class="pilar__tick"></span>
+                <h3>Página de links ou cardápio digital</h3>
+                <p>Seus links, produtos ou pratos em uma página leve, ideal para a bio e para o QR code.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="servico__info reveal">
+          <div class="bloco">
+            <p class="bloco__label">Exemplos reais</p>
+            <p class="placeholder">[PLACEHOLDER: exemplos de sites e landing pages entregues]</p>
+            <a href="#portfolio" class="link-traco" data-filtro="sites">Ver no portfólio</a>
+          </div>
+          <div class="bloco">
+            <p class="bloco__label">Como funciona</p>
+            <p>Conversa pelo WhatsApp, orçamento, produção e entrega com ajustes.</p>
+            <a href="#como-funciona" class="link-traco">Ver as etapas</a>
+          </div>
+          <div class="bloco">
+            <p class="bloco__label">Prazo médio</p>
+            <p class="placeholder">[PLACEHOLDER: prazo médio de sites e landing pages]</p>
+          </div>
+        </div>
+
+        <div class="faq reveal">
+          <p class="bloco__label">Perguntas frequentes</p>
+          <details class="faq__item">
+            <summary>Quanto custa um site?</summary>
+            <p>Cada projeto é sob orçamento, porque depende do tipo de página e do que ela precisa ter. Conte o que você precisa pelo WhatsApp e enviamos a proposta.</p>
+          </details>
+          <details class="faq__item">
+            <summary>Posso pedir alterações depois de ver o site?</summary>
+            <p>Sim. Os ajustes fazem parte da entrega, e você revisa antes da versão final.</p>
+          </details>
+          <details class="faq__item">
+            <summary>Preciso ter logo e textos prontos?</summary>
+            <p>Ajuda, mas não é obrigatório. Na conversa inicial vemos o que você já tem e o que falta para começar.</p>
+          </details>
+          <details class="faq__item">
+            <summary>Vocês cuidam do domínio e da hospedagem?</summary>
+            <p><span class="placeholder">[PLACEHOLDER: confirmar se domínio e hospedagem fazem parte do serviço]</span></p>
+          </details>
+        </div>
+
+        <div class="servico__cta reveal">
+          <a href="https://wa.me/5517981428839?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20NEX%20e%20quero%20um%20or%C3%A7amento%20de%20site%20%2F%20landing%20page." class="btn btn--black">Solicitar orçamento sem compromisso <span class="arrow">→</span></a>
         </div>
       </div>
     </section>
 
-    <!-- ============ COMO FUNCIONA ============ -->
+    <!-- ============ 03 VÍDEOS ============ -->
+    <section class="section section--bordered" id="videos">
+      <div class="container">
+        <div class="section__head reveal">
+          <p class="section__index">03 — Vídeos</p>
+          <h2 class="section__title">Vídeos informativos sobre o seu comércio ou produto.</h2>
+          <p class="section__sub">
+            Vídeos curtos e claros que mostram o que você faz, prontos para cada rede.
+          </p>
+        </div>
+
+        <div class="servico__grid">
+          <div class="reveal">
+            <div class="bloco">
+              <p class="bloco__label">Para quem é</p>
+              <ul class="tags">
+                <li>Restaurantes e delivery</li>
+                <li>Lojas e e-commerces</li>
+                <li>Clínicas e estética</li>
+                <li>Imobiliárias</li>
+                <li>Prestadores de serviço</li>
+                <li>Indústrias e distribuidoras</li>
+                <li>Marcas com produto próprio</li>
+              </ul>
+            </div>
+            <div class="bloco">
+              <p class="bloco__label">Destaque</p>
+              <p class="destaque">Motion design puro ou integrado a vídeos reais: você grava ou nos envia as imagens, e nós adicionamos animações, textos animados, mockups, b-rolls, trilha e efeitos sonoros.</p>
+            </div>
+            <div class="bloco">
+              <p class="bloco__label">O que está incluído</p>
+              <ul class="lista-traco">
+                <li>Roteiro ou estrutura do vídeo</li>
+                <li>Edição</li>
+                <li>Motion design</li>
+                <li>Trilha e efeitos sonoros</li>
+                <li>Formatos para cada rede: vertical, horizontal e quadrado</li>
+                <li>Ajustes conforme o pedido</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bloco reveal delay-1">
+            <p class="bloco__label">Tipos de entrega</p>
+            <ul class="pilares">
+              <li class="pilar">
+                <span class="pilar__tick"></span>
+                <h3>Vídeo de apresentação da empresa</h3>
+                <p>Mostra quem você é, o que oferece e por que confiar no seu negócio.</p>
+              </li>
+              <li class="pilar">
+                <span class="pilar__tick"></span>
+                <h3>Vídeo de produto ou serviço</h3>
+                <p>Explica como funciona e quais são os benefícios, sem enrolação.</p>
+              </li>
+              <li class="pilar">
+                <span class="pilar__tick"></span>
+                <h3>Anúncio em vídeo</h3>
+                <p>Peça curta e direta, feita para chamar atenção logo nos primeiros segundos.</p>
+              </li>
+              <li class="pilar">
+                <span class="pilar__tick"></span>
+                <h3>Reels e vídeos curtos</h3>
+                <p>Conteúdo vertical para Instagram, TikTok e Shorts.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="servico__info reveal">
+          <div class="bloco">
+            <p class="bloco__label">Exemplos reais</p>
+            <p class="placeholder">[PLACEHOLDER: exemplos de vídeos entregues]</p>
+            <a href="#portfolio" class="link-traco" data-filtro="videos">Ver no portfólio</a>
+          </div>
+          <div class="bloco">
+            <p class="bloco__label">Como funciona</p>
+            <p>Conversa pelo WhatsApp, orçamento, produção e entrega com ajustes.</p>
+            <a href="#como-funciona" class="link-traco">Ver as etapas</a>
+          </div>
+          <div class="bloco">
+            <p class="bloco__label">Prazo médio</p>
+            <p class="placeholder">[PLACEHOLDER: prazo médio de vídeos]</p>
+          </div>
+        </div>
+
+        <div class="faq reveal">
+          <p class="bloco__label">Perguntas frequentes</p>
+          <details class="faq__item">
+            <summary>Preciso gravar alguma coisa?</summary>
+            <p>Depende do vídeo. Podemos trabalhar só com motion design, sem nenhuma gravação, ou usar imagens que você grava ou já tem.</p>
+          </details>
+          <details class="faq__item">
+            <summary>Posso gravar com o celular?</summary>
+            <p>Pode. Na conversa explicamos o que gravar para as imagens funcionarem bem na edição.</p>
+          </details>
+          <details class="faq__item">
+            <summary>Em quais formatos o vídeo é entregue?</summary>
+            <p>Nos formatos de cada rede: vertical (9:16), horizontal (16:9) e quadrado (1:1), conforme o uso combinado.</p>
+          </details>
+          <details class="faq__item">
+            <summary>Quanto custa um vídeo?</summary>
+            <p>É sob orçamento: o valor depende da duração, do tipo de vídeo e de quanto motion design ele leva. Chame no WhatsApp e conte a sua ideia.</p>
+          </details>
+        </div>
+
+        <div class="servico__cta reveal">
+          <a href="https://wa.me/5517981428839?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20NEX%20e%20quero%20um%20or%C3%A7amento%20de%20v%C3%ADdeo." class="btn btn--black">Solicitar orçamento sem compromisso <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 04 MATERIAIS COMERCIAIS ============ -->
+    <section class="section section--bordered" id="materiais">
+      <div class="container">
+        <div class="section__head reveal">
+          <p class="section__index">04 — Materiais Comerciais</p>
+          <h2 class="section__title">Materiais comerciais personalizados.</h2>
+          <p class="section__sub">
+            Apresentações, propostas e catálogos com a cara da sua empresa, prontos para
+            usar na hora de vender.
+          </p>
+        </div>
+
+        <div class="servico__grid">
+          <div class="reveal">
+            <div class="bloco">
+              <p class="bloco__label">Para quem é</p>
+              <ul class="tags">
+                <li>Prestadores de serviço</li>
+                <li>Representantes comerciais</li>
+                <li>Indústrias e distribuidoras</li>
+                <li>Restaurantes</li>
+                <li>Agências e consultorias</li>
+                <li>Construtoras e arquitetos</li>
+                <li>Profissionais liberais</li>
+              </ul>
+            </div>
+            <div class="bloco">
+              <p class="bloco__label">Destaque</p>
+              <p class="destaque">Material feito com a identidade da sua empresa, pronto para ser usado na hora de fechar vendas.</p>
+            </div>
+            <div class="bloco">
+              <p class="bloco__label">O que está incluído</p>
+              <ul class="lista-traco">
+                <li>Design personalizado com a sua identidade</li>
+                <li>Entrega em PDF e/ou formato editável <span class="placeholder">[PLACEHOLDER: confirmar formatos]</span></li>
+                <li>Versões para impressão ou para envio digital, quando fizer sentido</li>
+                <li>Ajustes conforme o pedido</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bloco reveal delay-1">
+            <p class="bloco__label">Tipos de entrega</p>
+            <ul class="pilares">
+              <li class="pilar">
+                <span class="pilar__tick"></span>
+                <h3>Apresentação comercial</h3>
+                <p>Apresenta a empresa e a sua solução em reuniões e envios.</p>
+              </li>
+              <li class="pilar">
+                <span class="pilar__tick"></span>
+                <h3>Proposta comercial</h3>
+                <p>Organiza escopo, condições e próximos passos de forma clara e profissional.</p>
+              </li>
+              <li class="pilar">
+                <span class="pilar__tick"></span>
+                <h3>Catálogo de produtos ou serviços</h3>
+                <p>Reúne o que você vende em um material fácil de consultar e compartilhar.</p>
+              </li>
+              <li class="pilar">
+                <span class="pilar__tick"></span>
+                <h3>Cardápio digital</h3>
+                <p>Pratos, preços e fotos em um arquivo leve para enviar pelo WhatsApp ou abrir pelo QR code.</p>
+              </li>
+              <li class="pilar">
+                <span class="pilar__tick"></span>
+                <h3>Portfólio em PDF</h3>
+                <p>Seus melhores trabalhos reunidos em um arquivo para enviar a clientes.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="servico__info reveal">
+          <div class="bloco">
+            <p class="bloco__label">Exemplos reais</p>
+            <p class="placeholder">[PLACEHOLDER: exemplos de materiais comerciais entregues]</p>
+            <a href="#portfolio" class="link-traco" data-filtro="materiais">Ver no portfólio</a>
+          </div>
+          <div class="bloco">
+            <p class="bloco__label">Como funciona</p>
+            <p>Conversa pelo WhatsApp, orçamento, produção e entrega com ajustes.</p>
+            <a href="#como-funciona" class="link-traco">Ver as etapas</a>
+          </div>
+          <div class="bloco">
+            <p class="bloco__label">Prazo médio</p>
+            <p class="placeholder">[PLACEHOLDER: prazo médio de materiais comerciais]</p>
+          </div>
+        </div>
+
+        <div class="faq reveal">
+          <p class="bloco__label">Perguntas frequentes</p>
+          <details class="faq__item">
+            <summary>Vocês usam a identidade visual que a empresa já tem?</summary>
+            <p>Sim. Partimos do seu logo, das suas cores e das suas fontes para o material ficar com a cara da empresa.</p>
+          </details>
+          <details class="faq__item">
+            <summary>Consigo editar o material depois?</summary>
+            <p>Depende do formato combinado na entrega. <span class="placeholder">[PLACEHOLDER: confirmar formatos editáveis entregues]</span></p>
+          </details>
+          <details class="faq__item">
+            <summary>O material serve para imprimir?</summary>
+            <p>Sim. Quando fizer sentido, preparamos uma versão para impressão além da versão para envio digital.</p>
+          </details>
+          <details class="faq__item">
+            <summary>Quanto custa um material comercial?</summary>
+            <p>É sob orçamento: o valor depende do tipo de material e da quantidade de páginas. Chame no WhatsApp e conte o que você precisa.</p>
+          </details>
+        </div>
+
+        <div class="servico__cta reveal">
+          <a href="https://wa.me/5517981428839?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20NEX%20e%20quero%20um%20or%C3%A7amento%20de%20materiais%20comerciais." class="btn btn--black">Solicitar orçamento sem compromisso <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 05 ARTES E POSTS ============ -->
+    <section class="section section--bordered" id="artes">
+      <div class="container">
+        <div class="section__head reveal">
+          <p class="section__index">05 — Artes e Posts</p>
+          <h2 class="section__title">Artes e posts para redes sociais.</h2>
+          <p class="section__sub">
+            Peças com a identidade da sua marca, nos formatos certos de cada rede e
+            prontas para postar.
+          </p>
+        </div>
+
+        <div class="servico__grid">
+          <div class="reveal">
+            <div class="bloco">
+              <p class="bloco__label">Para quem é</p>
+              <ul class="tags">
+                <li>Lojas</li>
+                <li>Restaurantes e cafés</li>
+                <li>Clínicas e estética</li>
+                <li>Academias e estúdios</li>
+                <li>Prestadores de serviço</li>
+                <li>Profissionais liberais</li>
+                <li>Eventos</li>
+              </ul>
+            </div>
+            <div class="bloco">
+              <p class="bloco__label">Destaque</p>
+              <p class="destaque">Peças avulsas ou em kits, por exemplo de 4, 8 ou 12 artes, sempre alinhadas à identidade da sua marca.</p>
+            </div>
+            <div class="bloco">
+              <p class="bloco__label">O que está incluído</p>
+              <ul class="lista-traco">
+                <li>Arte final nos formatos corretos de cada rede</li>
+                <li>Ajustes conforme o pedido</li>
+                <li>Arquivos prontos para postar</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bloco reveal delay-1">
+            <p class="bloco__label">Tipos de entrega</p>
+            <ul class="pilares">
+              <li class="pilar">
+                <span class="pilar__tick"></span>
+                <h3>Posts de feed</h3>
+                <p>Artes para promoções, avisos, lançamentos e datas especiais.</p>
+              </li>
+              <li class="pilar">
+                <span class="pilar__tick"></span>
+                <h3>Carrosséis</h3>
+                <p>Sequência de telas para explicar um assunto ou apresentar produtos.</p>
+              </li>
+              <li class="pilar">
+                <span class="pilar__tick"></span>
+                <h3>Stories</h3>
+                <p>Peças verticais para divulgação rápida e chamadas para ação.</p>
+              </li>
+              <li class="pilar">
+                <span class="pilar__tick"></span>
+                <h3>Capas de destaque</h3>
+                <p>Ícones padronizados que deixam o perfil organizado.</p>
+              </li>
+              <li class="pilar">
+                <span class="pilar__tick"></span>
+                <h3>Kit de identidade para redes sociais</h3>
+                <p>Conjunto de modelos com a sua identidade para manter o perfil consistente.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="servico__info reveal">
+          <div class="bloco">
+            <p class="bloco__label">Exemplos reais</p>
+            <p class="placeholder">[PLACEHOLDER: exemplos de artes e posts entregues]</p>
+            <a href="#portfolio" class="link-traco" data-filtro="artes">Ver no portfólio</a>
+          </div>
+          <div class="bloco">
+            <p class="bloco__label">Como funciona</p>
+            <p>Conversa pelo WhatsApp, orçamento, produção e entrega com ajustes.</p>
+            <a href="#como-funciona" class="link-traco">Ver as etapas</a>
+          </div>
+          <div class="bloco">
+            <p class="bloco__label">Prazo médio</p>
+            <p class="placeholder">[PLACEHOLDER: prazo médio de artes e posts]</p>
+          </div>
+        </div>
+
+        <div class="faq reveal">
+          <p class="bloco__label">Perguntas frequentes</p>
+          <details class="faq__item">
+            <summary>Posso pedir só uma arte?</summary>
+            <p>Pode. Fazemos peças avulsas ou em kits.</p>
+          </details>
+          <details class="faq__item">
+            <summary>Como funcionam os kits?</summary>
+            <p>Você escolhe a quantidade de artes, por exemplo 4, 8 ou 12, e todas seguem a mesma identidade. O valor é combinado no orçamento.</p>
+          </details>
+          <details class="faq__item">
+            <summary>Preciso mandar textos e fotos?</summary>
+            <p>Se você tiver, usamos o seu material. Na conversa inicial combinamos o que você envia e o que nós preparamos.</p>
+          </details>
+          <details class="faq__item">
+            <summary>Vocês também fazem a publicação?</summary>
+            <p>A entrega são os arquivos prontos para postar. <span class="placeholder">[PLACEHOLDER: confirmar se a NEX também faz a publicação]</span></p>
+          </details>
+        </div>
+
+        <div class="servico__cta reveal">
+          <a href="https://wa.me/5517981428839?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20NEX%20e%20quero%20um%20or%C3%A7amento%20de%20artes%20e%20posts%20para%20redes%20sociais." class="btn btn--black">Solicitar orçamento sem compromisso <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 06 PORTFÓLIO ============ -->
+    <section class="section section--bordered" id="portfolio">
+      <div class="container">
+        <div class="section__head reveal">
+          <p class="section__index">06 — Portfólio</p>
+          <h2 class="section__title">Trabalhos entregues.</h2>
+          <p class="section__sub">Uma amostra do que a NEX produz. Filtre por serviço.</p>
+        </div>
+
+        <div class="filtros reveal" role="group" aria-label="Filtrar portfólio por serviço">
+          <button type="button" class="filtro" data-filtro="todos" aria-pressed="true">Todos</button>
+          <button type="button" class="filtro" data-filtro="sites" aria-pressed="false">Sites</button>
+          <button type="button" class="filtro" data-filtro="videos" aria-pressed="false">Vídeos</button>
+          <button type="button" class="filtro" data-filtro="materiais" aria-pressed="false">Materiais</button>
+          <button type="button" class="filtro" data-filtro="artes" aria-pressed="false">Artes</button>
+        </div>
+
+        <!-- Cada item: troque o placeholder da mídia por <img alt="..."> ou <video>,
+             e preencha cliente e descrição. data-servico controla o filtro. -->
+        <ul class="portfolio">
+          <li class="trabalho reveal" data-servico="sites">
+            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagem do site]</div>
+            <p class="trabalho__servico">Site institucional</p>
+            <h3>[PLACEHOLDER: nome do cliente]</h3>
+            <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+          </li>
+          <li class="trabalho reveal delay-1" data-servico="videos">
+            <div class="trabalho__midia placeholder">[PLACEHOLDER: vídeo ou capa do vídeo]</div>
+            <p class="trabalho__servico">Vídeo de produto</p>
+            <h3>[PLACEHOLDER: nome do cliente]</h3>
+            <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+          </li>
+          <li class="trabalho reveal delay-2" data-servico="materiais">
+            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagem do material]</div>
+            <p class="trabalho__servico">Apresentação comercial</p>
+            <h3>[PLACEHOLDER: nome do cliente]</h3>
+            <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+          </li>
+          <li class="trabalho reveal" data-servico="artes">
+            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagem das artes]</div>
+            <p class="trabalho__servico">Kit de posts</p>
+            <h3>[PLACEHOLDER: nome do cliente]</h3>
+            <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+          </li>
+          <li class="trabalho reveal delay-1" data-servico="sites">
+            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagem da landing page]</div>
+            <p class="trabalho__servico">Landing page</p>
+            <h3>[PLACEHOLDER: nome do cliente]</h3>
+            <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+          </li>
+          <li class="trabalho reveal delay-2" data-servico="videos">
+            <div class="trabalho__midia placeholder">[PLACEHOLDER: vídeo ou capa do vídeo]</div>
+            <p class="trabalho__servico">Reels</p>
+            <h3>[PLACEHOLDER: nome do cliente]</h3>
+            <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+          </li>
+          <li class="trabalho reveal" data-servico="materiais">
+            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagem do catálogo]</div>
+            <p class="trabalho__servico">Catálogo</p>
+            <h3>[PLACEHOLDER: nome do cliente]</h3>
+            <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+          </li>
+          <li class="trabalho reveal delay-1" data-servico="artes">
+            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagem do carrossel]</div>
+            <p class="trabalho__servico">Carrossel</p>
+            <h3>[PLACEHOLDER: nome do cliente]</h3>
+            <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 07 COMO FUNCIONA ============ -->
     <section class="section section--bordered" id="como-funciona">
       <div class="container">
         <div class="section__head reveal">
-          <p class="section__index">04 — Como funciona</p>
-          <h2 class="section__title">Do primeiro contato ao resultado.</h2>
+          <p class="section__index">07 — Como funciona</p>
+          <h2 class="section__title">Do primeiro contato à entrega.</h2>
         </div>
 
         <ol class="timeline">
           <li class="step reveal">
             <span class="step__num">01</span>
             <div class="step__body">
-              <h3>Entre em contato</h3>
-              <p>Fale com a NEX pelo canal oficial. Simples, direto e sem burocracia.</p>
+              <h3>Conversa pelo WhatsApp</h3>
+              <p>Você conta o que precisa. Tiramos as dúvidas e entendemos o seu negócio.</p>
             </div>
           </li>
           <li class="step reveal delay-1">
             <span class="step__num">02</span>
             <div class="step__body">
-              <h3>Entendemos seu perfil</h3>
-              <p>Analisamos seu conteúdo, seu público e seus canais para encontrar o melhor encaixe.</p>
+              <h3>Orçamento</h3>
+              <p>Enviamos a proposta com o que será entregue e o prazo. Sem compromisso.</p>
             </div>
           </li>
           <li class="step reveal delay-2">
             <span class="step__num">03</span>
             <div class="step__body">
-              <h3>Encontramos oportunidades</h3>
-              <p>Apresentamos campanhas e marcas compatíveis com seu perfil, com condições claras.</p>
+              <h3>Produção</h3>
+              <p>Produzimos tudo sob medida, com você falando direto com quem faz o trabalho.</p>
             </div>
           </li>
           <li class="step reveal delay-3">
             <span class="step__num">04</span>
             <div class="step__body">
-              <h3>Acompanhamos os resultados</h3>
-              <p>Acompanhamos a performance de perto e ajustamos a estratégia para buscar crescimento consistente.</p>
+              <h3>Entrega e ajustes</h3>
+              <p>Você recebe, revisa e pede os ajustes antes da versão final.</p>
             </div>
           </li>
         </ol>
+
+        <div class="ajustes reveal">
+          <p class="bloco__label">Política de ajustes</p>
+          <p class="placeholder">[PLACEHOLDER: número de revisões incluídas e prazo para pedir ajustes]</p>
+        </div>
       </div>
     </section>
 
-    <!-- ============ CONTATO ============ -->
-    <section class="section section--bordered" id="contato">
-      <div class="container contato__grid">
-        <div class="contato__intro reveal">
-          <p class="section__index">05 — Contato</p>
-          <h2 class="section__title contato__title">Vamos construir a próxima oportunidade.</h2>
-          <p class="section__sub">
-            Se você é influenciador e quer transformar sua influência em novas
-            oportunidades de negócio, envie três informações sobre o seu perfil
-            e continue a conversa direto no nosso WhatsApp.
-          </p>
+    <!-- ============ 08 SOBRE A NEX ============ -->
+    <section class="section section--bordered" id="sobre">
+      <div class="container">
+        <div class="section__head reveal">
+          <p class="section__index">08 — Sobre a NEX</p>
+          <h2 class="section__title">Um estúdio para o seu negócio aparecer melhor.</h2>
         </div>
 
-        <form class="form reveal delay-1" id="formContato" novalidate>
-          <div class="form__field">
-            <label for="instagram"><span class="form__num">01</span>@ do Instagram</label>
-            <input type="text" id="instagram" name="instagram" placeholder="@seuperfil"
-                   autocomplete="off" autocapitalize="none" spellcheck="false"
-                   required aria-describedby="instagram-erro" />
-            <p class="form__error" id="instagram-erro" hidden></p>
+        <div class="sobre__grid">
+          <div class="sobre__text reveal">
+            <p>
+              A NEX Serviços Comerciais é um estúdio de serviços digitais para empresas e
+              comércios. Produzimos sites, vídeos, materiais comerciais e artes sob medida,
+              com produção rápida e acabamento premium.
+            </p>
+            <p>
+              Cada projeto começa numa conversa direta e termina com um material pronto
+              para usar no dia a dia do seu negócio.
+            </p>
           </div>
-          <div class="form__field">
-            <label for="seguidores"><span class="form__num">02</span>Quantidade de seguidores</label>
-            <input type="text" id="seguidores" name="seguidores" placeholder="Ex.: 50.000"
-                   inputmode="numeric" autocomplete="off"
-                   required aria-describedby="seguidores-erro" />
-            <p class="form__error" id="seguidores-erro" hidden></p>
-          </div>
-          <div class="form__field">
-            <label for="stories"><span class="form__num">03</span>Média de visualizações nos stories</label>
-            <input type="text" id="stories" name="stories" placeholder="Ex.: 3.000"
-                   inputmode="numeric" autocomplete="off"
-                   required aria-describedby="stories-erro" />
-            <p class="form__error" id="stories-erro" hidden></p>
-          </div>
-          <button type="submit" class="btn btn--black">Enviar pelo WhatsApp <span class="arrow">→</span></button>
-          <p class="form__hint">O WhatsApp abre com a mensagem pronta. É só confirmar o envio.</p>
-        </form>
+
+          <ul class="pilares">
+            <li class="pilar reveal">
+              <span class="pilar__tick"></span>
+              <h3>Tudo personalizado</h3>
+              <p>Nada de modelo pronto: cada peça parte do seu negócio e da sua identidade.</p>
+            </li>
+            <li class="pilar reveal delay-1">
+              <span class="pilar__tick"></span>
+              <h3>Prazo curto</h3>
+              <p>Produção ágil, com o prazo combinado antes de começar.</p>
+            </li>
+            <li class="pilar reveal delay-2">
+              <span class="pilar__tick"></span>
+              <h3>Contato direto com quem produz</h3>
+              <p>Você fala com quem está fazendo o trabalho, sem intermediários.</p>
+            </li>
+            <li class="pilar reveal delay-3">
+              <span class="pilar__tick"></span>
+              <h3>Ajustes incluídos</h3>
+              <p>Você revisa e pede ajustes antes da versão final.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CHAMADA FINAL ============ -->
+    <section class="section section--bordered chamada" id="contato">
+      <svg class="chamada__watermark" viewBox="0 0 660 400" aria-hidden="true">
+        <use href="#nx-mark"></use>
+      </svg>
+
+      <div class="container">
+        <h2 class="chamada__title reveal">Vamos conversar sobre o seu projeto.</h2>
+        <p class="section__sub reveal delay-1">
+          Conte o que você precisa pelo WhatsApp. O orçamento é sem compromisso.
+        </p>
+        <a href="https://wa.me/5517981428839?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20NEX%20e%20quero%20um%20or%C3%A7amento." class="btn btn--black reveal delay-2">Solicitar orçamento sem compromisso <span class="arrow">→</span></a>
       </div>
     </section>
   </main>
@@ -298,20 +816,26 @@
       <svg class="footer__logo" viewBox="0 0 660 400" aria-hidden="true">
         <use href="#nx-mark"></use>
       </svg>
-      <p class="footer__name">NEX <em>CREATORS</em></p>
+      <p class="footer__name">NEX</p>
       <p class="footer__tagline">
-        A NEX atua principalmente no mercado de iGaming, conectando influenciadores
-        a campanhas e oportunidades de performance.
+        NEX Serviços Comerciais — sites, vídeos, materiais comerciais e artes para
+        empresas e comércios.
       </p>
 
-      <nav class="footer__social" aria-label="Redes sociais">
-        <a href="#contato">WhatsApp</a>
-        <a href="#" rel="noopener">Instagram</a>
+      <nav class="footer__social" aria-label="Contato e redes sociais">
+        <a href="https://wa.me/5517981428839?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20NEX%20e%20quero%20um%20or%C3%A7amento.">WhatsApp</a>
+        <!-- [PLACEHOLDER: link do Instagram] -->
+        <a href="#">Instagram</a>
       </nav>
 
-      <p class="footer__legal">© 2025 NEX Creators. Todos os direitos reservados.</p>
+      <p class="footer__legal">© 2025 NEX Serviços Comerciais. Todos os direitos reservados.</p>
     </div>
   </footer>
+
+  <!-- Barra de orçamento fixa: aparece com o menu recolhido (celular e tablet) -->
+  <div class="cta-fixo">
+    <a href="https://wa.me/5517981428839?text=Ol%C3%A1%21%20Vim%20pelo%20site%20da%20NEX%20e%20quero%20um%20or%C3%A7amento." class="btn btn--black">Solicitar orçamento sem compromisso <span class="arrow">→</span></a>
+  </div>
 
   <!-- Símbolo NX oficial (definição única, reutilizada em todo o site) -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
