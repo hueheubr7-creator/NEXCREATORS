@@ -1,460 +1,380 @@
-/* NEX — interações discretas */
+/* NEX — interações
+   Um laço de quadros único cuida de tudo o que acompanha a rolagem e o mouse. */
 
 (function () {
   "use strict";
 
-  /* Fade-in ao rolar */
-  const revealed = document.querySelectorAll(".reveal");
-  if ("IntersectionObserver" in window) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
-    );
-    revealed.forEach((el) => io.observe(el));
-  } else {
-    revealed.forEach((el) => el.classList.add("visible"));
+  const $ = (sel, raiz = document) => raiz.querySelector(sel);
+  const $$ = (sel, raiz = document) => [...raiz.querySelectorAll(sel)];
+  const limitar = (v, min, max) => Math.min(Math.max(v, min), max);
+  const lerp = (a, b, t) => a + (b - a) * t;
+
+  const reduzMovimento = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const mouseFino = matchMedia("(hover: hover) and (pointer: fine)").matches;
+  const navH = () => $(".topo").offsetHeight;
+
+  /* ---------- Rolagem suave (Lenis), se a biblioteca carregou ---------- */
+
+  let lenis = null;
+  if (window.Lenis && !reduzMovimento) {
+    lenis = new window.Lenis({
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
   }
 
-  /* Menu mobile */
-  const toggle = document.getElementById("navToggle");
-  const links = document.getElementById("navLinks");
-  if (toggle && links) {
-    toggle.addEventListener("click", () => {
-      const open = links.classList.toggle("open");
-      toggle.setAttribute("aria-expanded", String(open));
-      toggle.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
+  function rolarPara(alvo) {
+    const destino = alvo === "#inicio" ? 0 : $(alvo);
+    if (destino === null) return false;
+    if (lenis) {
+      lenis.scrollTo(destino, { offset: destino === 0 ? 0 : -navH() + 1 });
+    } else {
+      const y = destino === 0 ? 0 : destino.getBoundingClientRect().top + window.scrollY - navH() + 1;
+      window.scrollTo({ top: y, behavior: reduzMovimento ? "auto" : "smooth" });
+    }
+    return true;
+  }
+
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+    const href = link.getAttribute("href");
+    if (href.length < 2) return; // "#" vazio (placeholder do Instagram)
+    if (rolarPara(href)) {
+      e.preventDefault();
+      fecharMenu();
+    }
+  });
+
+  /* ---------- Menu em tela cheia ---------- */
+
+  const botaoMenu = $("#botaoMenu");
+  const menuTela = $("#menuTela");
+  $$(".menu-tela__nav a").forEach((a, i) => a.style.setProperty("--n", i));
+
+  function abrirMenu() {
+    menuTela.hidden = false;
+    requestAnimationFrame(() => menuTela.classList.add("aberto"));
+    botaoMenu.setAttribute("aria-expanded", "true");
+    botaoMenu.setAttribute("aria-label", "Fechar menu");
+    if (lenis) lenis.stop();
+  }
+
+  function fecharMenu() {
+    if (!menuTela || menuTela.hidden) return;
+    menuTela.classList.remove("aberto");
+    menuTela.hidden = true;
+    botaoMenu.setAttribute("aria-expanded", "false");
+    botaoMenu.setAttribute("aria-label", "Abrir menu");
+    if (lenis) lenis.start();
+  }
+
+  if (botaoMenu && menuTela) {
+    botaoMenu.addEventListener("click", () => (menuTela.hidden ? abrirMenu() : fecharMenu()));
+    document.addEventListener("keydown", (e) => e.key === "Escape" && fecharMenu());
+  }
+
+  /* ---------- Entrada do hero ---------- */
+
+  const hero = $(".hero");
+  const comecar = () => hero && hero.classList.add("pronto");
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() =>
+    requestAnimationFrame(comecar)
+  );
+  setTimeout(comecar, 1200); // garantia se as fontes demorarem
+
+  /* Palavra que troca sozinha no hero */
+  const itensGiro = $$(".giro__item");
+  if (itensGiro.length > 1 && !reduzMovimento) {
+    let atual = 0;
+    setInterval(() => {
+      const saindo = itensGiro[atual];
+      atual = (atual + 1) % itensGiro.length;
+      const entrando = itensGiro[atual];
+      saindo.classList.remove("ativo");
+      saindo.classList.add("saindo");
+      entrando.classList.remove("saindo");
+      entrando.classList.add("ativo");
+      setTimeout(() => saindo.classList.remove("saindo"), 750);
+    }, 1900);
+  }
+
+  /* ---------- Revelar ao rolar ---------- */
+
+  const revelaveis = $$("[data-revelar], .final");
+  if ("IntersectionObserver" in window && !reduzMovimento) {
+    const io = new IntersectionObserver(
+      (entradas) =>
+        entradas.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("visivel");
+            io.unobserve(e.target);
+          }
+        }),
+      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+    );
+    revelaveis.forEach((el) => io.observe(el));
+  } else {
+    revelaveis.forEach((el) => el.classList.add("visivel"));
+  }
+
+  /* ---------- Manifesto: palavras acendem com a rolagem ---------- */
+
+  const manifesto = $("[data-palavras]");
+  let palavras = [];
+  if (manifesto) {
+    const texto = manifesto.textContent.trim().replace(/\s+/g, " ");
+    manifesto.setAttribute("aria-label", texto);
+    manifesto.innerHTML = texto
+      .split(" ")
+      .map((p) => `<span class="palavra" aria-hidden="true">${p}</span>`)
+      .join(" ");
+    palavras = $$(".palavra", manifesto);
+  }
+
+  /* ---------- Portfólio: filtros e prévia flutuante ---------- */
+
+  const filtros = $$(".filtro");
+  const obras = $$(".obra");
+
+  function filtrar(servico) {
+    filtros.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.filtro === servico)));
+    obras.forEach((o) => (o.hidden = servico !== "todos" && o.dataset.servico !== servico));
+  }
+  filtros.forEach((b) => b.addEventListener("click", () => filtrar(b.dataset.filtro)));
+  $$("a[data-filtro]").forEach((a) => a.addEventListener("click", () => filtrar(a.dataset.filtro)));
+
+  const previa = $(".previa");
+  const posPrevia = { x: 0, y: 0, alvoX: 0, alvoY: 0 };
+  if (previa && mouseFino) {
+    obras.forEach((obra) => {
+      obra.addEventListener("mouseenter", () => {
+        const midia = $(".obra__midia", obra);
+        previa.innerHTML = midia ? midia.outerHTML : "";
+        previa.classList.add("ativa");
+      });
+      obra.addEventListener("mouseleave", () => previa.classList.remove("ativa"));
     });
-    links.querySelectorAll("a").forEach((a) =>
-      a.addEventListener("click", () => {
-        links.classList.remove("open");
-        toggle.setAttribute("aria-expanded", "false");
+  }
+
+  /* ---------- Bento: brilho segue o mouse ---------- */
+
+  if (mouseFino) {
+    $$(".bloco-b").forEach((bloco) =>
+      bloco.addEventListener("pointermove", (e) => {
+        const r = bloco.getBoundingClientRect();
+        bloco.style.setProperty("--mx", `${e.clientX - r.left}px`);
+        bloco.style.setProperty("--my", `${e.clientY - r.top}px`);
       })
     );
   }
 
-  /* Portfólio: filtro por serviço */
-  const filtros = document.querySelectorAll(".filtro");
-  const trabalhos = document.querySelectorAll(".trabalho");
+  /* ---------- Perguntas frequentes: abas e acordeão ---------- */
 
-  function filtrar(servico) {
-    filtros.forEach((botao) =>
-      botao.setAttribute("aria-pressed", String(botao.dataset.filtro === servico))
-    );
-    trabalhos.forEach((item) => {
-      item.hidden = servico !== "todos" && item.dataset.servico !== servico;
+  const abas = $$(".aba");
+  function ativarAba(aba, focar) {
+    abas.forEach((a) => {
+      const ativa = a === aba;
+      a.setAttribute("aria-selected", String(ativa));
+      a.tabIndex = ativa ? 0 : -1;
+      $("#" + a.getAttribute("aria-controls")).hidden = !ativa;
     });
+    if (focar) aba.focus();
   }
+  abas.forEach((aba, i) => {
+    aba.addEventListener("click", () => ativarAba(aba));
+    aba.addEventListener("keydown", (e) => {
+      const passo = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+      if (!passo) return;
+      e.preventDefault();
+      ativarAba(abas[(i + passo + abas.length) % abas.length], true);
+    });
+  });
 
-  filtros.forEach((botao) =>
-    botao.addEventListener("click", () => filtrar(botao.dataset.filtro))
+  $$(".pergunta button").forEach((botao) =>
+    botao.addEventListener("click", () => {
+      const pergunta = botao.closest(".pergunta");
+      const abrir = !pergunta.classList.contains("aberta");
+      pergunta.classList.toggle("aberta", abrir);
+      botao.setAttribute("aria-expanded", String(abrir));
+    })
   );
 
-  /* Links "Ver no portfólio" de cada serviço já abrem o filtro certo */
-  document.querySelectorAll("a[data-filtro]").forEach((link) =>
-    link.addEventListener("click", () => filtrar(link.dataset.filtro))
-  );
-})();
+  /* ---------- Cursor e botões magnéticos ---------- */
 
-/* ================================================================
-   Hero: lâmina branca inclinada que sobe ao rolar, e distorção líquida
-   da imagem seguindo o mouse (WebGL, sem bibliotecas)
-   ================================================================ */
-(function () {
-  "use strict";
+  const cursor = $(".cursor");
+  const rato = { x: -100, y: -100, cx: -100, cy: -100 };
 
-  const hero = document.querySelector(".hero");
-  if (!hero) return;
-
-  const nav = document.querySelector(".nav");
-  const menu = document.getElementById("navLinks");
-  const toggle = document.getElementById("navToggle");
-  const lamina = document.querySelector(".lamina");
-  const canvas = hero.querySelector(".hero__canvas");
-  const reduzMovimento = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const mouseFino = matchMedia("(hover: hover) and (pointer: fine)").matches;
-
-  /* ---------- Rolagem: parallax do hero, lâmina e cor do menu ---------- */
-
-  const PARALLAX = 0.1;           // o hero sobe 10% da rolagem
-  const LAMINA_SUBIDA = 0.26;     // a lâmina sobe até 26% da altura da tela
-  const LAMINA_INCLINACAO = 0.13; // tangente máxima da inclinação (≈ 7,4°)
-
-  let progresso = 0;
-  let quadroPedido = false;
-  let heroVisivel = true;
-
-  function aplicarRolagem() {
-    quadroPedido = false;
-    const vh = window.innerHeight;
-    const y = window.scrollY;
-    const alvo = Math.min(Math.max(y / vh, 0), 1);
-
-    // Suavização: a lâmina persegue a rolagem, em vez de colar nela
-    progresso = reduzMovimento ? alvo : progresso + (alvo - progresso) * 0.14;
-    if (Math.abs(alvo - progresso) < 0.0005) progresso = alvo;
+  if (mouseFino) {
+    window.addEventListener("pointermove", (e) => {
+      rato.x = e.clientX;
+      rato.y = e.clientY;
+      posPrevia.alvoX = e.clientX;
+      posPrevia.alvoY = e.clientY;
+      if (cursor) cursor.classList.remove("oculto");
+    });
+    document.addEventListener("mouseleave", () => cursor && cursor.classList.add("oculto"));
+    document.addEventListener("pointerover", (e) => {
+      const interativo = e.target.closest("a, button, .obra");
+      if (cursor) cursor.classList.toggle("grande", !!interativo);
+    });
 
     if (!reduzMovimento) {
-      const desloc = -PARALLAX * Math.min(y, vh * 1.2);
-      hero.style.transform = `translate3d(0, ${desloc.toFixed(1)}px, 0)`;
-    }
-
-    let topoDireito = Infinity;
-    if (lamina) {
-      const p = reduzMovimento ? 0 : progresso;
-      const sobe = -LAMINA_SUBIDA * vh * p;
-      const tangente = -LAMINA_INCLINACAO * p;
-      lamina.style.transform =
-        `translate3d(0, ${sobe.toFixed(1)}px, 0) skewY(${Math.atan(tangente).toFixed(4)}rad)`;
-      // Ponto mais alto da borda: o lado direito da tela
-      const topoSecao = lamina.parentElement.getBoundingClientRect().top;
-      topoDireito = topoSecao + sobe + tangente * (window.innerWidth / 2);
-    }
-
-    if (nav) {
-      const menuAberto = menu && menu.classList.contains("open");
-      nav.classList.toggle("nav--hero", topoDireito > nav.offsetHeight && !menuAberto);
-    }
-
-    heroVisivel = y < vh * 1.1;
-    if (progresso !== alvo) pedirQuadro();
-  }
-
-  function pedirQuadro() {
-    if (quadroPedido) return;
-    quadroPedido = true;
-    requestAnimationFrame(aplicarRolagem);
-  }
-
-  window.addEventListener("scroll", pedirQuadro, { passive: true });
-  window.addEventListener("resize", pedirQuadro);
-  if (toggle) toggle.addEventListener("click", pedirQuadro);
-  if (menu) menu.addEventListener("click", () => setTimeout(pedirQuadro, 0));
-  aplicarRolagem();
-
-  /* ---------- Distorção líquida ---------- */
-
-  if (!canvas) return;
-
-  const DPR = Math.min(window.devicePixelRatio || 1, 1.5);
-  const FORCA = 0.24;      // deslocamento máximo, em fração da tela
-  const DECAIMENTO = 0.035; // quanto o rastro some por quadro
-  const OCIOSO_MS = 3000;   // sem mouse por esse tempo, a animação para
-
-  /* Composição padrão (sem foto): fundo preto, brilho suave e o símbolo NX
-     gigante recortado pela tela, com granulação para a distorção ter onde agir */
-  function composicaoNX(w, h) {
-    const c = document.createElement("canvas");
-    c.width = w;
-    c.height = h;
-    const ctx = c.getContext("2d");
-
-    ctx.fillStyle = "#080A0D";
-    ctx.fillRect(0, 0, w, h);
-
-    const brilho = ctx.createRadialGradient(w * 0.64, h * 0.4, 0, w * 0.64, h * 0.4, Math.max(w, h) * 0.75);
-    brilho.addColorStop(0, "rgba(255,255,255,0.17)");
-    brilho.addColorStop(1, "rgba(255,255,255,0)");
-    ctx.fillStyle = brilho;
-    ctx.fillRect(0, 0, w, h);
-
-    const escala = (h * 1.08) / 400;
-    ctx.save();
-    ctx.translate(w * 0.3, h * -0.04);
-    ctx.scale(escala, escala);
-    ctx.beginPath();
-    ctx.rect(0, 0, 660, 400);
-    ctx.clip();
-    ctx.strokeStyle = "rgba(255,255,255,0.22)";
-    ctx.lineWidth = 27;
-    ctx.lineJoin = "miter";
-    ctx.miterLimit = 4;
-    ctx.stroke(new Path2D("M-30 -14 342 288 342 -25 690 385"));
-    ctx.stroke(new Path2D("M13.5 375 13.5 115 325 380 690 -7"));
-    ctx.restore();
-
-    const grao = document.createElement("canvas");
-    grao.width = grao.height = 128;
-    const g = grao.getContext("2d");
-    const ruido = g.createImageData(128, 128);
-    for (let i = 0; i < ruido.data.length; i += 4) {
-      const v = Math.random() * 255;
-      ruido.data[i] = ruido.data[i + 1] = ruido.data[i + 2] = v;
-      ruido.data[i + 3] = 14;
-    }
-    g.putImageData(ruido, 0, 0);
-    ctx.fillStyle = ctx.createPattern(grao, "repeat");
-    ctx.fillRect(0, 0, w, h);
-    return c;
-  }
-
-  /* Foto grande demais para a GPU é reduzida antes de virar textura */
-  function limitar(img, max) {
-    const maior = Math.max(img.naturalWidth || img.width, img.naturalHeight || img.height);
-    if (maior <= max) return img;
-    const k = max / maior;
-    const c = document.createElement("canvas");
-    c.width = Math.round((img.naturalWidth || img.width) * k);
-    c.height = Math.round((img.naturalHeight || img.height) * k);
-    c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
-    return c;
-  }
-
-  function carregarImagem(src) {
-    return new Promise((ok, falha) => {
-      const img = new Image();
-      img.decoding = "async";
-      img.onload = () => ok(img);
-      img.onerror = falha;
-      img.src = src;
-    });
-  }
-
-  const srcFoto = (hero.dataset.imagem || "").trim();
-  let foto = null; // imagem da foto, se houver; senão usa a composição
-
-  function tamanhoTela() {
-    return {
-      w: Math.max(1, Math.round(hero.clientWidth * DPR)),
-      h: Math.max(1, Math.round(hero.clientHeight * DPR)),
-    };
-  }
-
-  const gl = canvas.getContext("webgl", { alpha: false, antialias: false, premultipliedAlpha: false });
-
-  /* Sem WebGL: mostra a imagem parada em preto e branco */
-  if (!gl) {
-    const ctx = canvas.getContext("2d");
-    const pintar2D = () => {
-      const { w, h } = tamanhoTela();
-      canvas.width = w;
-      canvas.height = h;
-      const fonte = foto || composicaoNX(w, h);
-      const fw = fonte.naturalWidth || fonte.width;
-      const fh = fonte.naturalHeight || fonte.height;
-      const k = Math.max(w / fw, h / fh);
-      ctx.filter = "grayscale(1)";
-      ctx.drawImage(fonte, (w - fw * k) / 2, (h - fh * k) / 2, fw * k, fh * k);
-    };
-    (srcFoto ? carregarImagem(srcFoto).then((i) => (foto = i)).catch(() => {}) : Promise.resolve())
-      .then(pintar2D);
-    window.addEventListener("resize", pintar2D);
-    return;
-  }
-
-  const VERT = `
-    attribute vec2 a_pos;
-    varying vec2 v_uv;
-    void main() {
-      v_uv = a_pos * 0.5 + 0.5;
-      gl_Position = vec4(a_pos, 0.0, 1.0);
-    }`;
-
-  /* Desloca a imagem pelo mapa de rastro (rg = velocidade do mouse), soma uma
-     ondulação proporcional à força e converte para preto e branco */
-  const FRAG = `
-    precision mediump float;
-    uniform sampler2D u_img;
-    uniform sampler2D u_mapa;
-    uniform vec2 u_res;
-    uniform vec2 u_imgRes;
-    uniform float u_tempo;
-    uniform float u_forca;
-    varying vec2 v_uv;
-
-    vec2 cobrir(vec2 uv) {
-      float k = max(u_res.x / u_imgRes.x, u_res.y / u_imgRes.y);
-      vec2 tam = u_imgRes * k;
-      return (uv * u_res - (u_res - tam) * 0.5) / tam;
-    }
-
-    void main() {
-      vec2 d = texture2D(u_mapa, v_uv).rg - 0.5;
-      /* zona morta: o mapa de 8 bits nunca volta exatamente ao neutro */
-      d = sign(d) * max(abs(d) - 0.06, 0.0) / 0.44 * 0.5;
-      float m = length(d);
-      vec2 onda = vec2(sin(v_uv.y * 26.0 + u_tempo * 1.7), cos(v_uv.x * 22.0 - u_tempo * 1.4)) * m * 0.05;
-      vec2 uv = v_uv - d * u_forca - onda;
-      vec3 cor = texture2D(u_img, cobrir(uv)).rgb;
-      float cinza = dot(cor, vec3(0.299, 0.587, 0.114));
-      gl_FragColor = vec4(vec3(cinza), 1.0);
-    }`;
-
-  function shader(tipo, fonte) {
-    const s = gl.createShader(tipo);
-    gl.shaderSource(s, fonte);
-    gl.compileShader(s);
-    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
-    return s;
-  }
-
-  const programa = gl.createProgram();
-  gl.attachShader(programa, shader(gl.VERTEX_SHADER, VERT));
-  gl.attachShader(programa, shader(gl.FRAGMENT_SHADER, FRAG));
-  gl.linkProgram(programa);
-  gl.useProgram(programa);
-
-  const buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
-  const aPos = gl.getAttribLocation(programa, "a_pos");
-  gl.enableVertexAttribArray(aPos);
-  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-
-  const u = (nome) => gl.getUniformLocation(programa, nome);
-  const uRes = u("u_res");
-  const uImgRes = u("u_imgRes");
-  const uTempo = u("u_tempo");
-  gl.uniform1i(u("u_img"), 0);
-  gl.uniform1i(u("u_mapa"), 1);
-  gl.uniform1f(u("u_forca"), reduzMovimento || !mouseFino ? 0 : FORCA);
-
-  function novaTextura(unidade) {
-    const t = gl.createTexture();
-    gl.activeTexture(gl.TEXTURE0 + unidade);
-    gl.bindTexture(gl.TEXTURE_2D, t);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    return t;
-  }
-
-  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-  const texImg = novaTextura(0);
-  const texMapa = novaTextura(1);
-
-  /* Mapa do rastro: pequeno, cinza neutro = sem deslocamento */
-  const mapa = document.createElement("canvas");
-  const mctx = mapa.getContext("2d");
-
-  function limparMapa() {
-    mctx.globalAlpha = 1;
-    mctx.fillStyle = "rgb(128,128,128)";
-    mctx.fillRect(0, 0, mapa.width, mapa.height);
-  }
-
-  function enviarImagem() {
-    const { w, h } = tamanhoTela();
-    const fonte = foto ? limitar(foto, gl.getParameter(gl.MAX_TEXTURE_SIZE)) : composicaoNX(w, h);
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, texImg);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, fonte);
-    gl.uniform2f(uImgRes, fonte.naturalWidth || fonte.width, fonte.naturalHeight || fonte.height);
-  }
-
-  function dimensionar() {
-    const { w, h } = tamanhoTela();
-    canvas.width = w;
-    canvas.height = h;
-    gl.viewport(0, 0, w, h);
-    gl.uniform2f(uRes, w, h);
-    mapa.width = 256;
-    mapa.height = Math.max(64, Math.round((256 * h) / w));
-    limparMapa();
-    enviarImagem();
-  }
-
-  function desenhar(t) {
-    mctx.globalAlpha = 1;
-    mctx.fillStyle = `rgba(128,128,128,${DECAIMENTO})`;
-    mctx.fillRect(0, 0, mapa.width, mapa.height);
-    gl.activeTexture(gl.TEXTURE1);
-    gl.bindTexture(gl.TEXTURE_2D, texMapa);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mapa);
-    gl.uniform1f(uTempo, t / 1000);
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-  }
-
-  /* Pinta o rastro entre a posição anterior e a atual, com a velocidade
-     do movimento codificada nos canais vermelho (x) e verde (y) */
-  function pintarRastro(x0, y0, x1, y1) {
-    const dx = x1 - x0;
-    const dy = y1 - y0;
-    const dist = Math.hypot(dx, dy);
-    if (dist < 0.01) return;
-    const raio = mapa.width * 0.11;
-    const escala = mapa.width * 0.04;
-    const vx = Math.max(-1, Math.min(1, dx / escala));
-    const vy = Math.max(-1, Math.min(1, -dy / escala)); // y da textura cresce para cima
-    const r = Math.round(128 + vx * 120);
-    const g = Math.round(128 + vy * 120);
-    const passos = Math.max(1, Math.ceil(dist / (raio * 0.25)));
-    for (let i = 1; i <= passos; i++) {
-      const px = x0 + (dx * i) / passos;
-      const py = y0 + (dy * i) / passos;
-      const grad = mctx.createRadialGradient(px, py, 0, px, py, raio);
-      grad.addColorStop(0, `rgba(${r},${g},128,0.9)`);
-      grad.addColorStop(1, `rgba(${r},${g},128,0)`);
-      mctx.fillStyle = grad;
-      mctx.fillRect(px - raio, py - raio, raio * 2, raio * 2);
+      $$("[data-magnetico]").forEach((el) => {
+        const forca = el.classList.contains("circulo") ? 0.35 : 0.22;
+        el.addEventListener("pointermove", (e) => {
+          const r = el.getBoundingClientRect();
+          const dx = e.clientX - (r.left + r.width / 2);
+          const dy = e.clientY - (r.top + r.height / 2);
+          el.style.transform = `translate(${dx * forca}px, ${dy * forca}px)`;
+        });
+        el.addEventListener("pointerleave", () => {
+          el.style.transition = "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)";
+          el.style.transform = "";
+          setTimeout(() => (el.style.transition = ""), 600);
+        });
+      });
     }
   }
 
-  let rodando = false;
-  let ultimoMovimento = 0;
+  /* ---------- Laço de quadros: tudo que acompanha a rolagem ---------- */
 
-  function quadro(t) {
-    if (!heroVisivel) {
-      rodando = false;
-      return;
-    }
-    desenhar(t);
-    if (performance.now() - ultimoMovimento < OCIOSO_MS) {
-      requestAnimationFrame(quadro);
-    } else {
-      limparMapa();
-      desenhar(t);
-      rodando = false;
-    }
-  }
+  const progresso = $(".progresso");
+  const secaoFinal = $(".final");
+  const linhasHero = $$(".hero .linha");
+  const trilho = $(".faixa__trilho");
+  const grupoFaixa = $(".faixa__grupo");
+  const cartoes = $$(".servico");
+  const pilhaPresa = matchMedia("(min-width: 1081px) and (min-height: 760px)");
+  const passos = $$(".passo");
+  const linhaProcesso = $(".processo__linha span");
+  const contador = $(".contador__atual span");
+  const passosArea = $(".processo__passos");
 
-  function animar() {
-    if (rodando) return;
-    rodando = true;
+  // A faixa precisa de duas cópias para dar a volta sem emenda
+  if (trilho && grupoFaixa) trilho.appendChild(grupoFaixa.cloneNode(true));
+
+  let ultimoY = window.scrollY;
+  let faixaX = 0;
+  let faixaDir = 1;
+  let faixaInclina = 0;
+  let passoAtual = -1;
+
+  function quadro(tempo) {
+    if (lenis) lenis.raf(tempo);
+
+    const y = window.scrollY;
+    const vh = window.innerHeight;
+    const vel = y - ultimoY;
+    ultimoY = y;
+
+    // Barra de progresso da página
+    const total = document.documentElement.scrollHeight - vh;
+    if (progresso) progresso.style.transform = `scaleX(${total > 0 ? y / total : 0})`;
+
+    // Menu escuro enquanto passa sobre a seção preta do fim
+    if (secaoFinal) {
+      const rf = secaoFinal.getBoundingClientRect();
+      const h = navH();
+      document.body.classList.toggle("topo-escuro", rf.top <= h && rf.bottom > h);
+    }
+
+    if (!reduzMovimento) {
+      // Hero: linhas do título deslizam em direções alternadas
+      if (y < vh * 1.2) {
+        linhasHero.forEach((l) => {
+          const dir = Number(l.dataset.dir || 1);
+          l.style.transform = `translate3d(${dir * y * 0.12}px, 0, 0)`;
+        });
+      }
+
+      // Faixa: corre sozinha, acelera e inclina com a velocidade da rolagem
+      if (trilho && grupoFaixa) {
+        if (vel !== 0) faixaDir = vel > 0 ? 1 : -1;
+        const largura = grupoFaixa.offsetWidth;
+        faixaX -= (0.6 + Math.min(Math.abs(vel), 60) * 0.35) * faixaDir;
+        if (faixaX <= -largura) faixaX += largura;
+        if (faixaX > 0) faixaX -= largura;
+        faixaInclina = lerp(faixaInclina, limitar(vel * 0.25, -10, 10), 0.12);
+        trilho.style.transform = `translate3d(${faixaX}px, 0, 0) skewX(${-faixaInclina}deg)`;
+      }
+    }
+
+    // Manifesto: cada palavra acende conforme o texto atravessa a tela
+    if (palavras.length) {
+      const r = manifesto.getBoundingClientRect();
+      if (r.top < vh && r.bottom > 0) {
+        const p = limitar((vh * 0.82 - r.top) / (r.height + vh * 0.25), 0, 1);
+        const n = palavras.length;
+        palavras.forEach((w, i) => (w.style.opacity = 0.14 + 0.86 * limitar(p * n - i, 0, 1)));
+      }
+    }
+
+    // Serviços: o cartão de trás encolhe e escurece quando o próximo cobre
+    if (pilhaPresa.matches && !reduzMovimento) {
+      cartoes.forEach((c, i) => {
+        const prox = cartoes[i + 1];
+        if (!prox) return;
+        const rc = c.getBoundingClientRect();
+        const rp = prox.getBoundingClientRect();
+        const p = limitar(1 - (rp.top - rc.top) / rc.height, 0, 1);
+        c.style.transform = `scale(${1 - p * 0.06})`;
+        c.style.setProperty("--escuro", (p * 0.45).toFixed(3));
+      });
+    } else if (cartoes.length && cartoes[0].style.transform) {
+      cartoes.forEach((c) => {
+        c.style.transform = "";
+        c.style.setProperty("--escuro", 0);
+      });
+    }
+
+    // Processo: linha que preenche e contador da etapa atual
+    if (passosArea) {
+      const r = passosArea.getBoundingClientRect();
+      const p = limitar((vh * 0.55 - r.top) / r.height, 0, 1);
+      if (linhaProcesso) linhaProcesso.style.setProperty("--p", p.toFixed(4));
+      let idx = 0;
+      passos.forEach((s, i) => {
+        if (s.getBoundingClientRect().top < vh * 0.55) idx = i;
+      });
+      if (idx !== passoAtual) {
+        passoAtual = idx;
+        passos.forEach((s, i) => s.classList.toggle("atual", i <= idx));
+        if (contador) {
+          contador.style.transform = "translateY(-100%)";
+          setTimeout(() => {
+            contador.textContent = String(idx + 1).padStart(2, "0");
+            contador.style.transition = "none";
+            contador.style.transform = "translateY(100%)";
+            requestAnimationFrame(() => {
+              contador.style.transition = "";
+              contador.style.transform = "";
+            });
+          }, reduzMovimento ? 0 : 280);
+        }
+      }
+    }
+
+    // Cursor e prévia seguem o mouse com atraso suave
+    if (mouseFino) {
+      rato.cx = lerp(rato.cx, rato.x, 0.22);
+      rato.cy = lerp(rato.cy, rato.y, 0.22);
+      if (cursor) cursor.style.transform = `translate3d(${rato.cx}px, ${rato.cy}px, 0)`;
+      if (previa && previa.classList.contains("ativa")) {
+        posPrevia.x = lerp(posPrevia.x, posPrevia.alvoX, 0.14);
+        posPrevia.y = lerp(posPrevia.y, posPrevia.alvoY, 0.14);
+        const inclina = limitar((posPrevia.alvoX - posPrevia.x) * 0.06, -8, 8);
+        previa.style.transform =
+          `translate3d(${posPrevia.x + 28}px, ${posPrevia.y - previa.offsetHeight / 2}px, 0) rotate(${inclina}deg)`;
+      } else {
+        posPrevia.x = posPrevia.alvoX;
+        posPrevia.y = posPrevia.alvoY;
+      }
+    }
+
     requestAnimationFrame(quadro);
   }
 
-  let mouse = null;
-  if (mouseFino && !reduzMovimento) {
-    hero.addEventListener("pointermove", (e) => {
-      if (e.pointerType !== "mouse") return;
-      const r = hero.getBoundingClientRect();
-      const x = ((e.clientX - r.left) / r.width) * mapa.width;
-      const y = ((e.clientY - r.top) / r.height) * mapa.height;
-      if (mouse) pintarRastro(mouse.x, mouse.y, x, y);
-      mouse = { x, y };
-      ultimoMovimento = performance.now();
-      animar();
-    });
-    hero.addEventListener("pointerleave", () => (mouse = null));
-  }
-
-  let timerResize = 0;
-  window.addEventListener("resize", () => {
-    clearTimeout(timerResize);
-    timerResize = setTimeout(() => {
-      dimensionar();
-      desenhar(performance.now());
-    }, 150);
-  });
-
-  dimensionar();
-  desenhar(0);
-
-  if (srcFoto) {
-    carregarImagem(srcFoto)
-      .then((img) => {
-        foto = img;
-        enviarImagem();
-        desenhar(performance.now());
-      })
-      .catch(() => {}); // foto inválida: mantém a composição NX
-  }
+  requestAnimationFrame(quadro);
 })();
