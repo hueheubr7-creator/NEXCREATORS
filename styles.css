@@ -1012,7 +1012,44 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
   height: 100%;
   object-fit: cover;
 }
-.trabalho__midia--site img { object-position: left top; }
+/* Site rolando: a captura da página inteira desce e sobe sozinha enquanto
+   o trabalho está aberto (object-position anima o recorte de cima a baixo) */
+.trabalho__midia--site picture { display: block; width: 100%; height: 100%; }
+.trabalho__midia--site img { object-position: 50% 0%; }
+.trabalho.ativo .trabalho__midia--site img {
+  animation: rolar-site var(--rolagem, 24s) ease-in-out 0.8s infinite alternate;
+}
+@keyframes rolar-site { to { object-position: 50% 100%; } }
+
+/* Documento: uma página por vez, inteira, passando sozinha */
+.trabalho__midia--paginas { background: #000; }
+.trabalho__midia--paginas img {
+  position: absolute;
+  inset: 12px;
+  width: calc(100% - 24px);
+  height: calc(100% - 24px);
+  object-fit: contain;
+  opacity: 0;
+  transform: translateX(28px) scale(0.97);
+  transition: opacity 0.6s ease, transform 0.9s var(--ease);
+}
+.trabalho__midia--paginas img.atual { opacity: 1; transform: none; }
+.trabalho__midia--paginas img.saiu { transform: translateX(-28px) scale(0.97); }
+.trabalho__pagina {
+  position: absolute;
+  right: 10px;
+  top: 10px; /* no alto: embaixo a etiqueta do serviço pode encostar */
+  z-index: 2;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(8, 10, 13, 0.8);
+  border: 1px solid var(--line);
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+}
 /* Vídeo vertical: inteiro, sem cortar, sobre fundo preto */
 .trabalho__midia--video video { object-fit: contain; }
 .trabalho__midia--galeria {
@@ -1119,6 +1156,17 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+}
+/* Site inteiro no visor: rola de cima a baixo */
+.visor__item--rolar {
+  align-items: flex-start;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.visor__item--rolar img {
+  width: min(100%, 1100px);
+  max-height: none;
+  height: auto;
 }
 
 /* ---------------- Diferenciais (bento) ---------------- */
@@ -1695,6 +1743,8 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
   .trabalho.ativo { flex-grow: 0; }
   .trabalho__fechado { display: none; }
   .trabalho__midia { inset: 12px 12px 196px; opacity: 1; transform: none; }
+  /* A captura de celular é mais longa: rola mais devagar */
+  .trabalho__midia--site { --rolagem: 34s; }
   .trabalho__aberto { width: 100%; padding: 18px; opacity: 1; transform: none; }
 
   .paineis__pontos { display: flex; justify-content: center; gap: 6px; margin-top: 18px; }

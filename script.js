@@ -349,9 +349,16 @@
     const midia = $(".trabalho__midia", item);
     if (!visor || !midia || midia.classList.contains("placeholder")) return;
     const video = $("video", midia);
-    const fontes = video
-      ? [`<div class="visor__item"><video src="${esc(video.getAttribute("src"))}" poster="${esc(video.getAttribute("poster") || "")}" controls autoplay playsinline></video></div>`]
-      : $$("img", midia).map((img) => `<div class="visor__item"><img src="${esc(img.getAttribute("src"))}" alt="${esc(img.alt)}"></div>`);
+    let fontes;
+    if (video) {
+      fontes = [`<div class="visor__item"><video src="${esc(video.getAttribute("src"))}" poster="${esc(video.getAttribute("poster") || "")}" controls autoplay playsinline></video></div>`];
+    } else if (midia.classList.contains("trabalho__midia--site")) {
+      // Site inteiro: a mesma captura que o navegador escolheu (celular ou computador), rolável
+      const img = $("img", midia);
+      fontes = [`<div class="visor__item visor__item--rolar"><img src="${esc(img.currentSrc || img.getAttribute("src"))}" alt="${esc(img.alt)}"></div>`];
+    } else {
+      fontes = $$("img", midia).map((img) => `<div class="visor__item"><img src="${esc(img.getAttribute("src"))}" alt="${esc(img.alt)}"></div>`);
+    }
     visorTrilho.innerHTML = fontes.join("");
     visorTitulo.textContent = `${$(".trabalho__servico", item).textContent} · ${$(".trabalho__aberto h3", item).textContent}`;
     visorOrigem = document.activeElement;
@@ -399,6 +406,29 @@
         else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primeiro.focus(); }
       }
     });
+  }
+
+  /* Documentos: as páginas do trabalho aberto passam sozinhas */
+  function passarPagina(midia) {
+    const paginas = $$("img", midia);
+    const i = paginas.findIndex((p) => p.classList.contains("atual"));
+    const proxima = (i + 1) % paginas.length;
+    paginas.forEach((p) => p.classList.remove("saiu"));
+    if (i >= 0) {
+      paginas[i].classList.remove("atual");
+      paginas[i].classList.add("saiu");
+    }
+    paginas[proxima].classList.add("atual");
+    const rotulo = $(".trabalho__pagina", midia);
+    if (rotulo) rotulo.textContent = `${dois(proxima + 1)} / ${dois(paginas.length)}`;
+  }
+  if (!reduzMovimento) {
+    setInterval(() => {
+      if (!paineisNaTela || (visor && !visor.hidden)) return;
+      const ativo = trabalhos.find((t) => t.classList.contains("ativo") && !t.hidden);
+      const midia = ativo && $(".trabalho__midia--paginas", ativo);
+      if (midia) passarPagina(midia);
+    }, 2800);
   }
 
   $$("[data-ampliar]").forEach((b) =>

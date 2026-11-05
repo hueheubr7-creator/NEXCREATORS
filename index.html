@@ -493,19 +493,19 @@
           <p class="trabalhos__contagem"><strong class="contagem__atual">01</strong> / <span class="contagem__total">09</span></p>
         </div>
 
-        <!-- Cada trabalho: mídia em trabalhos/. Tipos: --site (imagem), --video (mp4 com capa),
-             --galeria (várias imagens; --colunas define a grade). data-servico controla o filtro.
-             No computador, o painel se expande no hover; no celular, vira carrossel.
-             "Ampliar" abre o visor em tela cheia com as mesmas mídias. -->
+        <!-- Cada trabalho: mídia em trabalhos/. Tipos: --site (captura longa que rola; <source> para
+             a versão de celular), --video (mp4 com capa), --paginas (documento: as páginas passam
+             sozinhas, uma por vez), --galeria (várias imagens lado a lado). data-servico controla o
+             filtro. O botão de ampliar abre o visor em tela cheia com as mesmas mídias. -->
         <ul class="paineis">
           <li class="trabalho ativo" data-servico="sites" tabindex="0">
-            <div class="trabalho__midia trabalho__midia--site"><img src="trabalhos/nex-site.webp" alt="Topo do site da NEX, com o título em letras grandes sobre fundo preto" loading="lazy" decoding="async"></div>
+            <div class="trabalho__midia trabalho__midia--site"><picture><source media="(max-width: 880px)" srcset="trabalhos/nex-site-mobile.webp"><img src="trabalhos/nex-site.webp" alt="Site da NEX do topo ao rodapé" loading="lazy" decoding="async"></picture></div>
             <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">01</span><span class="trabalho__vertical">Site institucional</span></div>
             <div class="trabalho__aberto">
               <span class="trabalho__servico">Site institucional</span>
               <h3>NEX</h3>
               <p>Este site: página única com animações, portfólio interativo e orçamento direto pelo WhatsApp.</p>
-              <div class="trabalho__acoes"><button type="button" class="trabalho__botao" data-ampliar>Ampliar</button></div>
+              <div class="trabalho__acoes"><button type="button" class="trabalho__botao" data-ampliar>Ver site inteiro</button></div>
             </div>
           </li>
           <li class="trabalho" data-servico="videos" tabindex="0">
@@ -519,13 +519,13 @@
             </div>
           </li>
           <li class="trabalho" data-servico="materiais" tabindex="0">
-            <div class="trabalho__midia trabalho__midia--galeria" style="--colunas: 2"><img src="trabalhos/apresentacao-1.webp" alt="Slide 1 da apresentação de Leonardo Araújo Miguel" loading="lazy" decoding="async"><img src="trabalhos/apresentacao-2.webp" alt="Slide 2 da apresentação de Leonardo Araújo Miguel" loading="lazy" decoding="async"><img src="trabalhos/apresentacao-3.webp" alt="Slide 3 da apresentação de Leonardo Araújo Miguel" loading="lazy" decoding="async"><img src="trabalhos/apresentacao-4.webp" alt="Slide 4 da apresentação de Leonardo Araújo Miguel" loading="lazy" decoding="async"></div>
+            <div class="trabalho__midia trabalho__midia--paginas" data-formato="slide"><img src="trabalhos/apresentacao-1.webp" alt="Slide 1 de 6 da apresentação de Leonardo Araújo Miguel" loading="lazy" decoding="async" class="atual"><img src="trabalhos/apresentacao-2.webp" alt="Slide 2 de 6 da apresentação de Leonardo Araújo Miguel" loading="lazy" decoding="async"><img src="trabalhos/apresentacao-3.webp" alt="Slide 3 de 6 da apresentação de Leonardo Araújo Miguel" loading="lazy" decoding="async"><img src="trabalhos/apresentacao-4.webp" alt="Slide 4 de 6 da apresentação de Leonardo Araújo Miguel" loading="lazy" decoding="async"><img src="trabalhos/apresentacao-5.webp" alt="Slide 5 de 6 da apresentação de Leonardo Araújo Miguel" loading="lazy" decoding="async"><img src="trabalhos/apresentacao-6.webp" alt="Slide 6 de 6 da apresentação de Leonardo Araújo Miguel" loading="lazy" decoding="async"><span class="trabalho__pagina" aria-hidden="true">01 / 06</span></div>
             <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">03</span><span class="trabalho__vertical">Apresentação profissional sob pedido</span></div>
             <div class="trabalho__aberto">
               <span class="trabalho__servico">Apresentação profissional sob pedido</span>
               <h3>Leonardo Araújo Miguel</h3>
               <p>Apresentação em slides feita sob pedido: trajetória, cursos, consultorias e próximos projetos.</p>
-              <div class="trabalho__acoes"><button type="button" class="trabalho__botao" data-ampliar>Ampliar</button></div>
+              <div class="trabalho__acoes"><button type="button" class="trabalho__botao" data-ampliar>Ver todas as páginas</button></div>
             </div>
           </li>
           <li class="trabalho" data-servico="artes" tabindex="0">
@@ -539,33 +539,33 @@
             </div>
           </li>
           <li class="trabalho" data-servico="sites" tabindex="0">
-            <div class="trabalho__midia trabalho__midia--site"><img src="trabalhos/la-drones-site.webp" alt="Topo da landing page da LA Drones" loading="lazy" decoding="async"></div>
+            <div class="trabalho__midia trabalho__midia--site"><picture><source media="(max-width: 880px)" srcset="trabalhos/la-drones-site-mobile.webp"><img src="trabalhos/la-drones-site.webp" alt="Landing page da LA Drones do topo ao rodapé" loading="lazy" decoding="async"></picture></div>
             <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">05</span><span class="trabalho__vertical">Landing page</span></div>
             <div class="trabalho__aberto">
               <span class="trabalho__servico">Landing page</span>
               <h3>LA Drones</h3>
               <p>Página de apresentação dos cursos de drones agrícolas, com contato direto pelo WhatsApp.</p>
-              <div class="trabalho__acoes"><button type="button" class="trabalho__botao" data-ampliar>Ampliar</button><a class="trabalho__botao" href="https://la-drones-site.netlify.app/" target="_blank" rel="noopener">Ver site ↗</a></div>
+              <div class="trabalho__acoes"><button type="button" class="trabalho__botao" data-ampliar>Ver site inteiro</button><a class="trabalho__botao" href="https://la-drones-site.netlify.app/" target="_blank" rel="noopener">Abrir site ↗</a></div>
             </div>
           </li>
           <li class="trabalho" data-servico="videos" tabindex="0">
-            <div class="trabalho__midia trabalho__midia--video"><video src="trabalhos/leo-reel.mp4" poster="trabalhos/leo-reel-capa.jpg" muted loop playsinline preload="none" aria-label="Reels do curso CAAR da LA Drones"></video></div>
+            <div class="trabalho__midia trabalho__midia--video"><video src="trabalhos/alfa-reel.mp4" poster="trabalhos/alfa-reel-capa.jpg" muted loop playsinline preload="none" aria-label="Reels do curso de manutenção de drones da Alfa Treinamentos com a LA Drones"></video></div>
             <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">06</span><span class="trabalho__vertical">Reels</span></div>
             <div class="trabalho__aberto">
               <span class="trabalho__servico">Reels</span>
-              <h3>LA Drones</h3>
-              <p>Reels do curso CAAR com legendas, títulos animados e chamadas na tela.</p>
+              <h3>Alfa Treinamentos + LA Drones</h3>
+              <p>Reels do 1º Curso de Manutenção de Drones em Uberaba, com legendas, títulos animados e chamadas na tela.</p>
               <div class="trabalho__acoes"><button type="button" class="trabalho__botao" data-ampliar>Ampliar</button></div>
             </div>
           </li>
           <li class="trabalho" data-servico="materiais" tabindex="0">
-            <div class="trabalho__midia trabalho__midia--galeria" style="--colunas: 3"><img src="trabalhos/proposta-1.webp" alt="Página 1 da proposta comercial da LA Drones, com dados ocultados" loading="lazy" decoding="async"><img src="trabalhos/proposta-2.webp" alt="Página 2 da proposta comercial da LA Drones, com dados ocultados" loading="lazy" decoding="async"><img src="trabalhos/proposta-3.webp" alt="Página 3 da proposta comercial da LA Drones, com dados ocultados" loading="lazy" decoding="async"></div>
+            <div class="trabalho__midia trabalho__midia--paginas" data-formato="a4"><img src="trabalhos/proposta-1.webp" alt="Página 1 de 7 da proposta comercial da LA Drones, com dados ocultados" loading="lazy" decoding="async" class="atual"><img src="trabalhos/proposta-2.webp" alt="Página 2 de 7 da proposta comercial da LA Drones, com dados ocultados" loading="lazy" decoding="async"><img src="trabalhos/proposta-3.webp" alt="Página 3 de 7 da proposta comercial da LA Drones, com dados ocultados" loading="lazy" decoding="async"><img src="trabalhos/proposta-4.webp" alt="Página 4 de 7 da proposta comercial da LA Drones, com dados ocultados" loading="lazy" decoding="async"><img src="trabalhos/proposta-5.webp" alt="Página 5 de 7 da proposta comercial da LA Drones, com dados ocultados" loading="lazy" decoding="async"><img src="trabalhos/proposta-6.webp" alt="Página 6 de 7 da proposta comercial da LA Drones, com dados ocultados" loading="lazy" decoding="async"><img src="trabalhos/proposta-7.webp" alt="Página 7 de 7 da proposta comercial da LA Drones, com dados ocultados" loading="lazy" decoding="async"><span class="trabalho__pagina" aria-hidden="true">01 / 07</span></div>
             <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">07</span><span class="trabalho__vertical">Proposta comercial</span></div>
             <div class="trabalho__aberto">
               <span class="trabalho__servico">Proposta comercial</span>
               <h3>LA Drones</h3>
               <p>Proposta de consultoria técnica com três modalidades. Valores, contatos e nomes ocultados.</p>
-              <div class="trabalho__acoes"><button type="button" class="trabalho__botao" data-ampliar>Ampliar</button></div>
+              <div class="trabalho__acoes"><button type="button" class="trabalho__botao" data-ampliar>Ver todas as páginas</button></div>
             </div>
           </li>
           <li class="trabalho" data-servico="artes" tabindex="0">
