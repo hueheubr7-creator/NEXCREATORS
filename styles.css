@@ -1154,25 +1154,13 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
   max-height: 100%;
   object-fit: contain;
 }
-.visor__item img { cursor: zoom-in; }
-
-/* Zoom: um toque na imagem amplia e deixa arrastar para ler (documentos no celular) */
-.visor__item.zoom {
-  align-items: flex-start;
-  justify-content: flex-start;
-  overflow: auto;
-  overscroll-behavior: contain;
-}
-.visor__item.zoom img {
-  width: max(220%, 900px);
-  max-width: none;
-  max-height: none;
-  height: auto;
-  cursor: zoom-out;
-}
 .visor__dica {
   font-size: 12.5px;
   color: var(--muted);
+}
+/* A dica de pinça só faz sentido em tela de toque pequena */
+@media (min-width: 881px) {
+  .visor__dica { display: none; }
 }
 /* ---------------- Diferenciais (bento) ---------------- */
 

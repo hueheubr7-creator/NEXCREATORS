@@ -400,7 +400,8 @@
       ? [`<div class="visor__item"><video src="${esc(video.getAttribute("src"))}" poster="${esc(video.getAttribute("poster") || "")}" controls autoplay playsinline></video></div>`]
       : $$("img", midia).map((img) => `<div class="visor__item"><img src="${esc(img.getAttribute("src"))}" alt="${esc(img.alt)}"></div>`);
     visorTrilho.innerHTML = fontes.join("");
-    $(".visor__dica", visor).hidden = !!video;
+    // Dica de zoom (pinça) só para documentos: proposta em PDF e apresentação
+    $(".visor__dica", visor).hidden = !["a4", "slide"].includes(midia.dataset.formato);
     visorTitulo.textContent = `${$(".trabalho__servico", item).textContent} · ${$(".trabalho__aberto h3", item).textContent}`;
     visorOrigem = document.activeElement;
     visor.hidden = false;
@@ -431,15 +432,6 @@
       )
     );
     visorTrilho.addEventListener("scroll", () => requestAnimationFrame(atualizarVisor), { passive: true });
-    // Toque na imagem: amplia para ler (e toque de novo volta); só uma ampliada por vez
-    visorTrilho.addEventListener("click", (e) => {
-      if (e.target.tagName !== "IMG") return;
-      const item = e.target.closest(".visor__item");
-      const ampliar = !item.classList.contains("zoom");
-      $$(".visor__item.zoom", visorTrilho).forEach((i) => i.classList.remove("zoom"));
-      item.classList.toggle("zoom", ampliar);
-      if (ampliar) item.scrollTo(0, 0);
-    });
     document.addEventListener("keydown", (e) => {
       if (visor.hidden) return;
       if (e.key === "Escape") fecharVisor();
