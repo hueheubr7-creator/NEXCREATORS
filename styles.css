@@ -914,8 +914,12 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
   height: clamp(440px, 66vh, 640px);
 }
 
+/* Coluna: mídia ocupa o espaço que sobra, o texto fica embaixo no fluxo
+   (nunca invade a mídia, seja qual for o tamanho da descrição) */
 .trabalho {
   position: relative;
+  display: flex;
+  flex-direction: column;
   flex: 1 1 0;
   min-width: 0;
   overflow: hidden;
@@ -932,8 +936,10 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
 @keyframes entrar-trabalho { from { opacity: 0; transform: translateY(18px); } }
 
 .trabalho__midia {
-  position: absolute;
-  inset: 14px 14px 184px; /* espaço para serviço, cliente, descrição e botões */
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  margin: 14px 14px 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -971,9 +977,9 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
 
 /* Estado aberto: largura fixa para o texto não reorganizar durante a expansão */
 .trabalho__aberto {
-  position: absolute;
-  left: 0;
-  bottom: 0;
+  position: relative;
+  flex: none;
+  /* largura fixa: o texto não se reorganiza enquanto o painel se expande */
   width: clamp(300px, 36vw, 520px);
   padding: 22px 26px;
   opacity: 0;
@@ -1102,7 +1108,7 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
-.visor__contagem { color: var(--muted); }
+.visor__contagem { color: var(--muted); white-space: nowrap; }
 
 .visor__fechar,
 .visor__seta {
@@ -1147,6 +1153,26 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+}
+.visor__item img { cursor: zoom-in; }
+
+/* Zoom: um toque na imagem amplia e deixa arrastar para ler (documentos no celular) */
+.visor__item.zoom {
+  align-items: flex-start;
+  justify-content: flex-start;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.visor__item.zoom img {
+  width: max(220%, 900px);
+  max-width: none;
+  max-height: none;
+  height: auto;
+  cursor: zoom-out;
+}
+.visor__dica {
+  font-size: 12.5px;
+  color: var(--muted);
 }
 /* ---------------- Diferenciais (bento) ---------------- */
 
@@ -1710,9 +1736,13 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
     overscroll-behavior-x: contain;
   }
   .paineis::-webkit-scrollbar { display: none; }
+  /* Card em coluna: mídia em cima (altura fixa), texto embaixo no fluxo,
+     para o texto nunca invadir a mídia; os cards da fileira ficam com a
+     mesma altura (o carrossel estica todos) */
   .trabalho {
     flex: 0 0 min(76vw, 330px);
-    height: 520px;
+    display: flex;
+    flex-direction: column;
     scroll-snap-align: center;
     border-color: var(--line-strong);
     transform: scale(var(--s, 1));
@@ -1721,7 +1751,22 @@ span.placeholder { display: inline-block; padding: 2px 8px; }
   }
   .trabalho.ativo { flex-grow: 0; }
   .trabalho__fechado { display: none; }
-  .trabalho__midia { inset: 12px 12px 196px; opacity: 1; transform: none; }  .trabalho__aberto { width: 100%; padding: 18px; opacity: 1; transform: none; }
+  .trabalho__midia {
+    position: relative;
+    inset: auto;
+    flex: none;
+    height: 330px;
+    margin: 12px 12px 0;
+    opacity: 1;
+    transform: none;
+  }
+  .trabalho__aberto {
+    position: static;
+    width: auto;
+    padding: 16px 18px 18px;
+    opacity: 1;
+    transform: none;
+  }
 
   .paineis__pontos { display: flex; justify-content: center; gap: 6px; margin-top: 18px; }
   .paineis__pontos span {

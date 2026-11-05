@@ -284,8 +284,32 @@
     }, { threshold: 0.25 }).observe(paineis);
   }
 
+  /* Pré-carrega o vídeo do trabalho aberto e dos vizinhos quando o portfólio
+     se aproxima da tela: ao passar para o próximo, ele já começa na hora */
+  let portfolioPerto = false;
+  function preCarregarVizinhos(item) {
+    if (!portfolioPerto || !item) return;
+    const lista = visiveis();
+    const i = lista.indexOf(item);
+    [lista[i], lista[i - 1], lista[i + 1]].forEach((t) => {
+      const v = t && $(".trabalho__midia video", t);
+      if (v && v.preload !== "auto") {
+        v.preload = "auto";
+        if (v.paused) v.load();
+      }
+    });
+  }
+  if (paineis && "IntersectionObserver" in window) {
+    new IntersectionObserver((e) => {
+      if (!e[0].isIntersecting) return;
+      portfolioPerto = true;
+      preCarregarVizinhos(trabalhos.find((t) => t.classList.contains("ativo")));
+    }, { rootMargin: "900px 0px" }).observe(paineis);
+  }
+
   function ativarTrabalho(item) {
     trabalhos.forEach((t) => t.classList.toggle("ativo", t === item));
+    preCarregarVizinhos(item);
     sincronizarVideos();
     const lista = visiveis();
     if (contTotal) contTotal.textContent = dois(lista.length);
@@ -376,6 +400,7 @@
       ? [`<div class="visor__item"><video src="${esc(video.getAttribute("src"))}" poster="${esc(video.getAttribute("poster") || "")}" controls autoplay playsinline></video></div>`]
       : $$("img", midia).map((img) => `<div class="visor__item"><img src="${esc(img.getAttribute("src"))}" alt="${esc(img.alt)}"></div>`);
     visorTrilho.innerHTML = fontes.join("");
+    $(".visor__dica", visor).hidden = !!video;
     visorTitulo.textContent = `${$(".trabalho__servico", item).textContent} · ${$(".trabalho__aberto h3", item).textContent}`;
     visorOrigem = document.activeElement;
     visor.hidden = false;
@@ -406,6 +431,15 @@
       )
     );
     visorTrilho.addEventListener("scroll", () => requestAnimationFrame(atualizarVisor), { passive: true });
+    // Toque na imagem: amplia para ler (e toque de novo volta); só uma ampliada por vez
+    visorTrilho.addEventListener("click", (e) => {
+      if (e.target.tagName !== "IMG") return;
+      const item = e.target.closest(".visor__item");
+      const ampliar = !item.classList.contains("zoom");
+      $$(".visor__item.zoom", visorTrilho).forEach((i) => i.classList.remove("zoom"));
+      item.classList.toggle("zoom", ampliar);
+      if (ampliar) item.scrollTo(0, 0);
+    });
     document.addEventListener("keydown", (e) => {
       if (visor.hidden) return;
       if (e.key === "Escape") fecharVisor();
