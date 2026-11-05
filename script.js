@@ -238,8 +238,32 @@
     marcaFiltro.style.transform = `translateX(${ativo.offsetLeft}px)`;
   }
 
+  /* Vídeos dos painéis: só toca o do trabalho ativo, sem som, com o
+     portfólio na tela e o visor fechado */
+  let paineisNaTela = false;
+  function sincronizarVideos() {
+    trabalhos.forEach((t) => {
+      const video = $(".trabalho__midia video", t);
+      if (!video) return;
+      const tocar = paineisNaTela && !reduzMovimento && t.classList.contains("ativo") && !t.hidden && visor && visor.hidden;
+      if (tocar) {
+        video.preload = "auto";
+        video.play().catch(() => {}); // navegador pode recusar: a capa fica visível
+      } else {
+        video.pause();
+      }
+    });
+  }
+  if (paineis && "IntersectionObserver" in window) {
+    new IntersectionObserver((e) => {
+      paineisNaTela = e[0].isIntersecting;
+      sincronizarVideos();
+    }, { threshold: 0.25 }).observe(paineis);
+  }
+
   function ativarTrabalho(item) {
     trabalhos.forEach((t) => t.classList.toggle("ativo", t === item));
+    sincronizarVideos();
     const lista = visiveis();
     if (contTotal) contTotal.textContent = dois(lista.length);
     if (contAtual) contAtual.textContent = dois(Math.max(1, lista.indexOf(item) + 1));
@@ -297,10 +321,103 @@
   filtros.forEach((b) => b.addEventListener("click", () => filtrar(b.dataset.filtro)));
   $$("a[data-filtro]").forEach((a) => a.addEventListener("click", () => filtrar(a.dataset.filtro)));
 
+  /* ---------- Visor em tela cheia ---------- */
+
+  const visor = $("#visor");
+  const visorTrilho = visor && $(".visor__trilho", visor);
+  const visorTitulo = visor && $(".visor__titulo", visor);
+  const visorContagem = visor && $(".visor__contagem", visor);
+  const visorSetas = visor ? $$(".visor__seta", visor) : [];
+  let visorOrigem = null;
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+  function visorIndice() {
+    return visorTrilho.clientWidth ? Math.round(visorTrilho.scrollLeft / visorTrilho.clientWidth) : 0;
+  }
+
+  function atualizarVisor() {
+    const total = visorTrilho.children.length;
+    const i = visorIndice();
+    visorContagem.textContent = total > 1 ? `${dois(i + 1)} / ${dois(total)}` : "";
+    visorSetas.forEach((b) => {
+      b.hidden = total < 2;
+      b.disabled = Number(b.dataset.dir) < 0 ? i === 0 : i >= total - 1;
+    });
+  }
+
+  function abrirVisor(item) {
+    const midia = $(".trabalho__midia", item);
+    if (!visor || !midia || midia.classList.contains("placeholder")) return;
+    const video = $("video", midia);
+    const fontes = video
+      ? [`<div class="visor__item"><video src="${esc(video.getAttribute("src"))}" poster="${esc(video.getAttribute("poster") || "")}" controls autoplay playsinline></video></div>`]
+      : $$("img", midia).map((img) => `<div class="visor__item"><img src="${esc(img.getAttribute("src"))}" alt="${esc(img.alt)}"></div>`);
+    visorTrilho.innerHTML = fontes.join("");
+    visorTitulo.textContent = `${$(".trabalho__servico", item).textContent} · ${$(".trabalho__aberto h3", item).textContent}`;
+    visorOrigem = document.activeElement;
+    visor.hidden = false;
+    visorTrilho.scrollLeft = 0;
+    if (lenis) lenis.stop();
+    document.body.style.overflow = "hidden";
+    sincronizarVideos();
+    atualizarVisor();
+    $(".visor__fechar", visor).focus();
+  }
+
+  function fecharVisor() {
+    if (!visor || visor.hidden) return;
+    $$("video", visorTrilho).forEach((v) => v.pause());
+    visor.hidden = true;
+    visorTrilho.innerHTML = "";
+    document.body.style.overflow = "";
+    if (lenis) lenis.start();
+    sincronizarVideos();
+    if (visorOrigem) visorOrigem.focus();
+  }
+
+  if (visor) {
+    $(".visor__fechar", visor).addEventListener("click", fecharVisor);
+    visorSetas.forEach((b) =>
+      b.addEventListener("click", () =>
+        visorTrilho.scrollBy({ left: Number(b.dataset.dir) * visorTrilho.clientWidth, behavior: "smooth" })
+      )
+    );
+    visorTrilho.addEventListener("scroll", () => requestAnimationFrame(atualizarVisor), { passive: true });
+    document.addEventListener("keydown", (e) => {
+      if (visor.hidden) return;
+      if (e.key === "Escape") fecharVisor();
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        e.preventDefault();
+        visorTrilho.scrollBy({ left: (e.key === "ArrowRight" ? 1 : -1) * visorTrilho.clientWidth, behavior: "smooth" });
+      }
+      // mantém o foco dentro do visor
+      if (e.key === "Tab") {
+        const focaveis = $$("button:not([hidden]):not(:disabled), video", visor);
+        const primeiro = focaveis[0];
+        const ultimo = focaveis[focaveis.length - 1];
+        if (e.shiftKey && document.activeElement === primeiro) { e.preventDefault(); ultimo.focus(); }
+        else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primeiro.focus(); }
+      }
+    });
+  }
+
+  $$("[data-ampliar]").forEach((b) =>
+    b.addEventListener("click", (e) => {
+      e.stopPropagation();
+      abrirVisor(b.closest(".trabalho"));
+    })
+  );
+
   trabalhos.forEach((t) => {
     t.addEventListener("mouseenter", () => !modoCarrossel.matches && ativarTrabalho(t));
     t.addEventListener("focus", () => ativarTrabalho(t));
-    t.addEventListener("click", () => {
+    t.addEventListener("click", (e) => {
+      if (e.target.closest("a, button")) return;
+      // Clique na mídia do trabalho já aberto amplia
+      if (t.classList.contains("ativo") && e.target.closest(".trabalho__midia")) {
+        abrirVisor(t);
+        return;
+      }
       if (modoCarrossel.matches) {
         paineis.scrollTo({ left: t.offsetLeft + t.offsetWidth / 2 - paineis.clientWidth / 2, behavior: "smooth" });
       } else {

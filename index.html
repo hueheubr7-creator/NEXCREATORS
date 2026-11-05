@@ -490,83 +490,100 @@
             <button type="button" class="filtro" data-filtro="materiais" aria-pressed="false">Materiais</button>
             <button type="button" class="filtro" data-filtro="artes" aria-pressed="false">Artes</button>
           </div>
-          <p class="trabalhos__contagem"><strong class="contagem__atual">01</strong> / <span class="contagem__total">08</span></p>
+          <p class="trabalhos__contagem"><strong class="contagem__atual">01</strong> / <span class="contagem__total">09</span></p>
         </div>
 
-        <!-- Cada trabalho: troque o placeholder da mídia por <img alt="..."> ou <video>,
-             e preencha cliente e descrição. data-servico controla o filtro.
-             No computador, o painel se expande ao passar o mouse; no celular, vira carrossel. -->
+        <!-- Cada trabalho: mídia em trabalhos/. Tipos: --site (imagem), --video (mp4 com capa),
+             --galeria (várias imagens; --colunas define a grade). data-servico controla o filtro.
+             No computador, o painel se expande no hover; no celular, vira carrossel.
+             "Ampliar" abre o visor em tela cheia com as mesmas mídias. -->
         <ul class="paineis">
           <li class="trabalho ativo" data-servico="sites" tabindex="0">
-            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagem do site]</div>
+            <div class="trabalho__midia trabalho__midia--site"><img src="trabalhos/nex-site.webp" alt="Topo do site da NEX, com o título em letras grandes sobre fundo preto" loading="lazy" decoding="async"></div>
             <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">01</span><span class="trabalho__vertical">Site institucional</span></div>
             <div class="trabalho__aberto">
               <span class="trabalho__servico">Site institucional</span>
-              <h3>[PLACEHOLDER: nome do cliente]</h3>
-              <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+              <h3>NEX</h3>
+              <p>Este site: página única com animações, portfólio interativo e orçamento direto pelo WhatsApp.</p>
+              <div class="trabalho__acoes"><button type="button" class="trabalho__botao" data-ampliar>Ampliar</button></div>
             </div>
           </li>
           <li class="trabalho" data-servico="videos" tabindex="0">
-            <div class="trabalho__midia placeholder">[PLACEHOLDER: vídeo ou capa do vídeo]</div>
-            <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">02</span><span class="trabalho__vertical">Vídeo de produto</span></div>
+            <div class="trabalho__midia trabalho__midia--video"><video src="trabalhos/baco-motion.mp4" poster="trabalhos/baco-motion-capa.jpg" muted loop playsinline preload="none" aria-label="Vídeo em motion design da BACO"></video></div>
+            <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">02</span><span class="trabalho__vertical">Vídeo full motion design</span></div>
             <div class="trabalho__aberto">
-              <span class="trabalho__servico">Vídeo de produto</span>
-              <h3>[PLACEHOLDER: nome do cliente]</h3>
-              <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+              <span class="trabalho__servico">Vídeo full motion design</span>
+              <h3>BACO</h3>
+              <p>Vídeo 100% em motion design apresentando os serviços da oficina, do alinhamento à conveniência para quem espera.</p>
+              <div class="trabalho__acoes"><button type="button" class="trabalho__botao" data-ampliar>Ampliar</button></div>
             </div>
           </li>
           <li class="trabalho" data-servico="materiais" tabindex="0">
-            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagem do material]</div>
-            <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">03</span><span class="trabalho__vertical">Apresentação comercial</span></div>
+            <div class="trabalho__midia trabalho__midia--galeria" style="--colunas: 2"><img src="trabalhos/apresentacao-1.webp" alt="Slide 1 da apresentação de Leonardo Araújo Miguel" loading="lazy" decoding="async"><img src="trabalhos/apresentacao-2.webp" alt="Slide 2 da apresentação de Leonardo Araújo Miguel" loading="lazy" decoding="async"><img src="trabalhos/apresentacao-3.webp" alt="Slide 3 da apresentação de Leonardo Araújo Miguel" loading="lazy" decoding="async"><img src="trabalhos/apresentacao-4.webp" alt="Slide 4 da apresentação de Leonardo Araújo Miguel" loading="lazy" decoding="async"></div>
+            <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">03</span><span class="trabalho__vertical">Apresentação profissional sob pedido</span></div>
             <div class="trabalho__aberto">
-              <span class="trabalho__servico">Apresentação comercial</span>
-              <h3>[PLACEHOLDER: nome do cliente]</h3>
-              <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+              <span class="trabalho__servico">Apresentação profissional sob pedido</span>
+              <h3>Leonardo Araújo Miguel</h3>
+              <p>Apresentação em slides feita sob pedido: trajetória, cursos, consultorias e próximos projetos.</p>
+              <div class="trabalho__acoes"><button type="button" class="trabalho__botao" data-ampliar>Ampliar</button></div>
             </div>
           </li>
           <li class="trabalho" data-servico="artes" tabindex="0">
-            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagem das artes]</div>
+            <div class="trabalho__midia trabalho__midia--galeria" style="--colunas: 3"><img src="trabalhos/kit-1.webp" alt="Post 1 do kit da LA Drones" loading="lazy" decoding="async"><img src="trabalhos/kit-2.webp" alt="Post 2 do kit da LA Drones" loading="lazy" decoding="async"><img src="trabalhos/kit-3.webp" alt="Post 3 do kit da LA Drones" loading="lazy" decoding="async"></div>
             <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">04</span><span class="trabalho__vertical">Kit de posts</span></div>
             <div class="trabalho__aberto">
               <span class="trabalho__servico">Kit de posts</span>
-              <h3>[PLACEHOLDER: nome do cliente]</h3>
-              <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+              <h3>LA Drones</h3>
+              <p>Peças para divulgação dos cursos CPPAR e CAAR, alinhadas à identidade da marca.</p>
+              <div class="trabalho__acoes"><button type="button" class="trabalho__botao" data-ampliar>Ampliar</button></div>
             </div>
           </li>
           <li class="trabalho" data-servico="sites" tabindex="0">
-            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagem da landing page]</div>
+            <div class="trabalho__midia trabalho__midia--site"><img src="trabalhos/la-drones-site.webp" alt="Topo da landing page da LA Drones" loading="lazy" decoding="async"></div>
             <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">05</span><span class="trabalho__vertical">Landing page</span></div>
             <div class="trabalho__aberto">
               <span class="trabalho__servico">Landing page</span>
-              <h3>[PLACEHOLDER: nome do cliente]</h3>
-              <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+              <h3>LA Drones</h3>
+              <p>Página de apresentação dos cursos de drones agrícolas, com contato direto pelo WhatsApp.</p>
+              <div class="trabalho__acoes"><button type="button" class="trabalho__botao" data-ampliar>Ampliar</button><a class="trabalho__botao" href="https://la-drones-site.netlify.app/" target="_blank" rel="noopener">Ver site ↗</a></div>
             </div>
           </li>
           <li class="trabalho" data-servico="videos" tabindex="0">
-            <div class="trabalho__midia placeholder">[PLACEHOLDER: vídeo ou capa do vídeo]</div>
+            <div class="trabalho__midia trabalho__midia--video"><video src="trabalhos/leo-reel.mp4" poster="trabalhos/leo-reel-capa.jpg" muted loop playsinline preload="none" aria-label="Reels do curso CAAR da LA Drones"></video></div>
             <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">06</span><span class="trabalho__vertical">Reels</span></div>
             <div class="trabalho__aberto">
               <span class="trabalho__servico">Reels</span>
-              <h3>[PLACEHOLDER: nome do cliente]</h3>
-              <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+              <h3>LA Drones</h3>
+              <p>Reels do curso CAAR com legendas, títulos animados e chamadas na tela.</p>
+              <div class="trabalho__acoes"><button type="button" class="trabalho__botao" data-ampliar>Ampliar</button></div>
             </div>
           </li>
           <li class="trabalho" data-servico="materiais" tabindex="0">
-            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagem do catálogo]</div>
-            <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">07</span><span class="trabalho__vertical">Catálogo</span></div>
+            <div class="trabalho__midia trabalho__midia--galeria" style="--colunas: 3"><img src="trabalhos/proposta-1.webp" alt="Página 1 da proposta comercial da LA Drones, com dados ocultados" loading="lazy" decoding="async"><img src="trabalhos/proposta-2.webp" alt="Página 2 da proposta comercial da LA Drones, com dados ocultados" loading="lazy" decoding="async"><img src="trabalhos/proposta-3.webp" alt="Página 3 da proposta comercial da LA Drones, com dados ocultados" loading="lazy" decoding="async"></div>
+            <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">07</span><span class="trabalho__vertical">Proposta comercial</span></div>
             <div class="trabalho__aberto">
-              <span class="trabalho__servico">Catálogo</span>
-              <h3>[PLACEHOLDER: nome do cliente]</h3>
-              <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+              <span class="trabalho__servico">Proposta comercial</span>
+              <h3>LA Drones</h3>
+              <p>Proposta de consultoria técnica com três modalidades. Valores, contatos e nomes ocultados.</p>
+              <div class="trabalho__acoes"><button type="button" class="trabalho__botao" data-ampliar>Ampliar</button></div>
             </div>
           </li>
           <li class="trabalho" data-servico="artes" tabindex="0">
-            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagem do carrossel]</div>
+            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagens do carrossel da LA Drones]</div>
             <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">08</span><span class="trabalho__vertical">Carrossel</span></div>
             <div class="trabalho__aberto">
               <span class="trabalho__servico">Carrossel</span>
-              <h3>[PLACEHOLDER: nome do cliente]</h3>
-              <p>[PLACEHOLDER: breve descrição do trabalho]</p>
+              <h3>LA Drones</h3>
+              <p>[PLACEHOLDER: breve descrição do carrossel]</p>
+            </div>
+          </li>
+          <li class="trabalho" data-servico="artes" tabindex="0">
+            <div class="trabalho__midia placeholder">[PLACEHOLDER: imagens do carrossel da BACO]</div>
+            <div class="trabalho__fechado" aria-hidden="true"><span class="trabalho__num">09</span><span class="trabalho__vertical">Carrossel</span></div>
+            <div class="trabalho__aberto">
+              <span class="trabalho__servico">Carrossel</span>
+              <h3>BACO</h3>
+              <p>[PLACEHOLDER: breve descrição do carrossel]</p>
             </div>
           </li>
         </ul>
@@ -812,6 +829,22 @@
       <p class="rodape__gigante" aria-hidden="true">NEX</p>
     </section>
   </main>
+
+  <!-- Visor do portfólio: abre em tela cheia as mídias do trabalho -->
+  <div class="visor" id="visor" role="dialog" aria-modal="true" aria-labelledby="visorTitulo" hidden>
+    <div class="visor__topo">
+      <p class="visor__titulo" id="visorTitulo"></p>
+      <button type="button" class="visor__fechar" aria-label="Fechar visualização">×</button>
+    </div>
+    <div class="visor__trilho" tabindex="0"></div>
+    <div class="visor__base">
+      <p class="visor__contagem" aria-live="polite"></p>
+      <div class="visor__nav">
+        <button type="button" class="visor__seta" data-dir="-1" aria-label="Anterior">←</button>
+        <button type="button" class="visor__seta" data-dir="1" aria-label="Próxima">→</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Barra de orçamento fixa: aparece com o menu recolhido (celular e tablet) -->
   <div class="cta-fixo">
