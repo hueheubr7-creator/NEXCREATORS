@@ -231,6 +231,29 @@
   const modoCarrossel = matchMedia("(max-width: 880px)");
   const visiveis = () => trabalhos.filter((t) => !t.hidden);
 
+  /* Gravações dos sites: versão de celular em telas estreitas (o site
+     gravado no celular não fica cortado), de computador nas demais */
+  const telaEstreita = matchMedia("(max-width: 880px)");
+  function escolherVersaoSites() {
+    $$(".trabalho__midia video[data-celular]").forEach((v) => {
+      if (!v.dataset.computador) {
+        v.dataset.computador = v.getAttribute("src");
+        v.dataset.computadorCapa = v.getAttribute("poster");
+      }
+      const celular = telaEstreita.matches;
+      const src = celular ? v.dataset.celular : v.dataset.computador;
+      if (v.getAttribute("src") !== src) {
+        v.setAttribute("src", src);
+        v.setAttribute("poster", celular ? v.dataset.celularCapa : v.dataset.computadorCapa);
+      }
+    });
+  }
+  escolherVersaoSites();
+  telaEstreita.addEventListener("change", () => {
+    escolherVersaoSites();
+    sincronizarVideos();
+  });
+
   function moverMarca() {
     const ativo = filtros.find((b) => b.getAttribute("aria-pressed") === "true");
     if (!ativo || !marcaFiltro) return;
@@ -349,16 +372,9 @@
     const midia = $(".trabalho__midia", item);
     if (!visor || !midia || midia.classList.contains("placeholder")) return;
     const video = $("video", midia);
-    let fontes;
-    if (video) {
-      fontes = [`<div class="visor__item"><video src="${esc(video.getAttribute("src"))}" poster="${esc(video.getAttribute("poster") || "")}" controls autoplay playsinline></video></div>`];
-    } else if (midia.classList.contains("trabalho__midia--site")) {
-      // Site inteiro: a mesma captura que o navegador escolheu (celular ou computador), rolável
-      const img = $("img", midia);
-      fontes = [`<div class="visor__item visor__item--rolar"><img src="${esc(img.currentSrc || img.getAttribute("src"))}" alt="${esc(img.alt)}"></div>`];
-    } else {
-      fontes = $$("img", midia).map((img) => `<div class="visor__item"><img src="${esc(img.getAttribute("src"))}" alt="${esc(img.alt)}"></div>`);
-    }
+    const fontes = video
+      ? [`<div class="visor__item"><video src="${esc(video.getAttribute("src"))}" poster="${esc(video.getAttribute("poster") || "")}" controls autoplay playsinline></video></div>`]
+      : $$("img", midia).map((img) => `<div class="visor__item"><img src="${esc(img.getAttribute("src"))}" alt="${esc(img.alt)}"></div>`);
     visorTrilho.innerHTML = fontes.join("");
     visorTitulo.textContent = `${$(".trabalho__servico", item).textContent} · ${$(".trabalho__aberto h3", item).textContent}`;
     visorOrigem = document.activeElement;
